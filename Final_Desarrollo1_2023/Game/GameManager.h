@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <raylib.h>
 
+#include "../Entity/Unit.h"
+
 class GameManager
 {
 public:
@@ -13,4 +15,5 @@ private:
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
+    Unit* basicUnit;
 };

@@ -1,9 +1,9 @@
 ﻿#include "GameManager.h"
-
 #include <cmath>
 
-GameManager::GameManager(): mouseSelection()
+GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
+    basicUnit = new Unit;
 }
 
 GameManager::~GameManager()
@@ -24,6 +24,7 @@ void GameManager::Update()
     {
         boxStart = GetMousePosition();
     }
+
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
         boxEnd = GetMousePosition();
@@ -32,12 +33,24 @@ void GameManager::Update()
         mouseSelection.width = fabs(boxEnd.x - boxStart.x);
         mouseSelection.height = fabs(boxEnd.y - boxStart.y);
     }
+
+    basicUnit->SetSelected(CheckCollisionRecs(basicUnit->GetBody(), mouseSelection));
+    
+    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    {
+        if (basicUnit->IsSelected()) basicUnit->SetDestination(GetMousePosition());
+    }
+
+    basicUnit->Move();
+    basicUnit->ModifyHealth(-5 * GetFrameTime());
 }
 
 void GameManager::Draw()
 {
     BeginDrawing();
-    //ClearBackground(WHITE);
-    DrawRectangleRec(mouseSelection, RED);
+    ClearBackground(BLACK);
+    basicUnit->DrawBody();
+    basicUnit->DrawHP();
+    DrawRectangleLinesEx(mouseSelection, 4, RED);
     EndDrawing();
 }
