@@ -1,13 +1,10 @@
 ﻿#include "Unit.h"
 
 #include <cmath>
-#include <float.h>
+#include <cfloat>
+#include "raymath.h"
 
-Unit::~Unit()
-{
-}
-
-Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), speed(10), selected(false), team(player),
+Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), speed(50), selected(false), team(player),
               destination({200, 200}),
               body({200, 200, 100, 100})
 {
@@ -22,38 +19,33 @@ Unit::Unit(float hp, float attack, float range, float speed, Rectangle body, Tea
 
 void Unit::Move()
 {
-    body.x += destination.x * GetFrameTime();
-    body.y += destination.y * GetFrameTime();
+    Vector2 normVector = Vector2Normalize(destination); //Normalize vector to use as unit's direction
+
+    body.x += normVector.x * speed * GetFrameTime();
+    body.y += normVector.y * speed * GetFrameTime();
 
     float diff_x = body.x - destination.x;
     float diff_y = body.y - destination.y;
-    
+
     float sqrmagX = diff_x * diff_x;
-    
+
     if (sqrmagX < FLT_EPSILON * FLT_EPSILON)
     {
         destination.x = 0;
     }
-    
-    
+
     float sqrmagY = diff_y * diff_y;
+
     if (sqrmagY < FLT_EPSILON * FLT_EPSILON)
     {
         destination.y = 0;
     }
 }
 
-void Unit::SetDestination(Vector2 destination)
+void Unit::SetDestination(Vector2 newDestination)
 {
-    this->destination.x = destination.x - body.x;
-    this->destination.y = destination.y - body.y;
-    float magnitude = sqrt(destination.x * destination.x + destination.y * destination.y);
-
-    if (magnitude != 0)
-    {
-        destination.x /= magnitude;
-        destination.y /= magnitude;
-    }
+    this->destination.x = newDestination.x - body.x;
+    this->destination.y = newDestination.y - body.y;
 }
 
 void Unit::ModifyHealth(float hpModifier)
@@ -63,15 +55,17 @@ void Unit::ModifyHealth(float hpModifier)
 
 void Unit::DrawHP()
 {
-    Rectangle totalHP = {body.x + body.height / 2 - hp / 2, body.y - body.height / 2, hp, body.width / 4};
-    Rectangle currentHpRect = {body.x + body.height / 2 - hp / 2, body.y - body.height / 2, currentHP, body.width / 4};
+    const float height = body.height;
+    const Rectangle totalHP = {body.x + height / 2 - hp / 2, body.y - height / 2, hp, body.width / 4};
+    Rectangle currentHpRect = {body.x + height / 2 - hp / 2, body.y - height / 2, currentHP, body.width / 4};
+
     DrawRectangleRec(totalHP, RAYWHITE);
     DrawRectangleRec(currentHpRect, RED);
 }
 
 void Unit::DrawBody()
 {
-    Color color;
+    Color color = GRAY;
     switch (team)
     {
     case player:
@@ -83,15 +77,8 @@ void Unit::DrawBody()
     case neutral:
         color = RAYWHITE;
         break;
-    default:
-        color = GRAY;
     }
     DrawRectangleRec(body, color);
-}
-
-void Unit::Attack(Unit* target)
-{
-    target->ModifyHealth(-attack);
 }
 
 bool Unit::IsSelected()

@@ -5,7 +5,7 @@
 
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
-    untis.push_back(new Soldier);
+    units.push_back(new Soldier);
 }
 
 GameManager::~GameManager()
@@ -36,7 +36,7 @@ void GameManager::Update()
         mouseSelection.height = fabs(boxEnd.y - boxStart.y);
     }
 
-    for (Unit* unit : untis)
+    for (Unit* unit : units)
     {
         unit->SetSelected(CheckCollisionRecs(unit->GetBody(), mouseSelection));
 
@@ -54,11 +54,13 @@ void GameManager::Draw()
 {
     BeginDrawing();
     ClearBackground(BLACK);
-    for (Unit* unit : untis)
+    
+    for (Unit* unit : units)
     {
         unit->DrawBody();
         unit->DrawHP();
     }
+    
     DrawRectangleLinesEx(mouseSelection, 4, RED);
     EndDrawing();
 }

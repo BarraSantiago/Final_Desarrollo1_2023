@@ -11,15 +11,15 @@ enum Team
 class Unit
 {
 public:
-    virtual ~Unit();
+    virtual ~Unit() = 0;
     Unit();
     Unit(float hp, float attack, float range, float speed, Rectangle body, Team team);
     void Move();
-    void SetDestination(Vector2 destination);
+    void SetDestination(Vector2 newDestination);
     void ModifyHealth(float hpModifier);
     void DrawHP();
     void DrawBody();
-    void Attack(Unit* target);
+    virtual void Attack(Unit* target) = 0;
     bool IsSelected();
     void SetSelected(bool select);
     Rectangle GetBody();

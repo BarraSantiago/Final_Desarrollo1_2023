@@ -154,13 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entity\BasicUnit.cpp" />
+    <ClCompile Include="Entity\Soldier.cpp" />
     <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity\BasicUnit.h" />
+    <ClInclude Include="Entity\Soldier.h" />
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="Game\GameManager.h" />
   </ItemGroup>
