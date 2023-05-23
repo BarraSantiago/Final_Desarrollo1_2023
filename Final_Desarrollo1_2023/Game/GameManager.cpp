@@ -2,6 +2,8 @@
 #include <cmath>
 
 #include "../Entity/Soldier.h"
+#include "TargetSystem.h"
+
 
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
@@ -10,6 +12,7 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
         units.push_back(new Soldier);
     }
     enemyController = new EnemyController{units};
+    units[0]->SetTarget(enemyController->GetEnemies()[0]);
 }
 
 GameManager::~GameManager()
@@ -52,9 +55,14 @@ void GameManager::Update()
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
-            if (unit->IsSelected()) unit->SetDestination(GetMousePosition());
+            Vector2 mouseTarget = GetMousePosition();
+            if (unit->IsSelected())
+            {
+                unit->SetDestination(mouseTarget);
+                unit->SetTarget(GetTarget(mouseTarget, enemyController->GetEnemies()));
+            }
         }
-
+        unit->Attack();
         unit->Move();
     }
     units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem)

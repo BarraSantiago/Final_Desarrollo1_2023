@@ -36,6 +36,10 @@ void EnemyController::Update()
         enemyUnit->Move();
         enemyUnit->Attack();
     }
+    enemyUnits.erase(std::remove_if(enemyUnits.begin(), enemyUnits.end(), [](Unit* elem)
+    {
+        return !elem->IsAlive();
+    }), enemyUnits.end());
 }
 
 void EnemyController::Draw()
@@ -45,4 +49,9 @@ void EnemyController::Draw()
         unit->DrawBody();
         unit->DrawHP();
     }
+}
+
+std::vector<Unit*> EnemyController::GetEnemies()
+{
+    return enemyUnits;
 }

@@ -10,7 +10,7 @@ public:
     ~EnemyController();
     void Update();
     void Draw();
-
+    std::vector<Unit*> GetEnemies();
 private:
     std::vector<Unit*> enemyUnits;
     std::vector<Unit*> playerUnits;

@@ -158,6 +158,7 @@
     <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="Game\EnemyController.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
+    <ClCompile Include="Game\TargetSystem.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="Game\EnemyController.h" />
     <ClInclude Include="Game\GameManager.h" />
+    <ClInclude Include="Game\TargetSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
