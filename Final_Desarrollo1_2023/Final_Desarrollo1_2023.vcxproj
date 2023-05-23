@@ -156,12 +156,14 @@
   <ItemGroup>
     <ClCompile Include="Entity\Soldier.cpp" />
     <ClCompile Include="Entity\Unit.cpp" />
+    <ClCompile Include="Game\EnemyController.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\Soldier.h" />
     <ClInclude Include="Entity\Unit.h" />
+    <ClInclude Include="Game\EnemyController.h" />
     <ClInclude Include="Game\GameManager.h" />
   </ItemGroup>
   <ItemGroup>

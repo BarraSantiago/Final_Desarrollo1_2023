@@ -26,7 +26,7 @@ Soldier::~Soldier()
 {
 }
 
-void Soldier::Attack(Unit* target)
+void Soldier::Attack()
 {
     if (Vector2Distance({body.x, body.y}, {target->GetBody().x, target->GetBody().y}) > range) return;
     if (target->GetTeam() == team) return;
@@ -40,4 +40,9 @@ void Soldier::Attack(Unit* target)
     {
         lastAttack -= attackSpeed * GetFrameTime();
     }
+}
+
+void Soldier::SetTarget(Unit* target)
+{
+    this->target = target;
 }

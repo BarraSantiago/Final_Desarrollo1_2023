@@ -97,3 +97,8 @@ bool Unit::IsAlive()
 {
     return alive;
 }
+
+Unit* Unit::GetTarget()
+{
+    return target;
+}

@@ -19,13 +19,15 @@ public:
     void ModifyHealth(float hpModifier);
     void DrawHP();
     void DrawBody();
-    virtual void Attack(Unit* target) = 0;
+    virtual void Attack() = 0;
     bool IsSelected();
     void SetSelected(bool select);
     Rectangle GetBody();
     Team GetTeam();
     bool IsAlive();
-    
+    virtual void SetTarget(Unit* target) = 0;
+    Unit* GetTarget();
+
 protected:
     float hp;
     float currentHP;
@@ -34,14 +36,15 @@ protected:
     float attackSpeed;
     float lastAttack;
     float speed;
-    
+
     bool selected;
     bool alive;
-    
+
     Team team;
 
+    Unit* target;
+
     Vector2 destination{};
-    
+
     Rectangle body;
-    
 };

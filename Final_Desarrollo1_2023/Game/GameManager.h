@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <vector>
 
+#include "EnemyController.h"
 #include "../Entity/Unit.h"
 
 class GameManager
@@ -16,6 +17,7 @@ private:
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
+    EnemyController* enemyController;
     std::vector<Unit*> units;
     
 };

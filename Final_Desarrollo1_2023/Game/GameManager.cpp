@@ -9,6 +9,7 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     {
         units.push_back(new Soldier);
     }
+    enemyController = new EnemyController{units};
 }
 
 GameManager::~GameManager()
@@ -18,8 +19,8 @@ void GameManager::GameController()
 {
     while (!WindowShouldClose())
     {
-        Draw();
         Update();
+        Draw();
     }
 }
 
@@ -55,23 +56,27 @@ void GameManager::Update()
         }
 
         unit->Move();
-        unit->ModifyHealth(-20*GetFrameTime());
     }
-    units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem) {
+    units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem)
+    {
         return !elem->IsAlive();
     }), units.end());
-    
+
+    enemyController->Update();
 }
 
 void GameManager::Draw()
 {
     BeginDrawing();
     ClearBackground(BLACK);
+
+    enemyController->Draw();
     for (Unit* unit : units)
     {
         unit->DrawBody();
         unit->DrawHP();
     }
+
     DrawRectangleLinesEx(mouseSelection, 4, RED);
     EndDrawing();
 }
