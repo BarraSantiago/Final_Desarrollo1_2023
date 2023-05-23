@@ -48,8 +48,9 @@ void Unit::ModifyHealth(float hpModifier)
 void Unit::DrawHP()
 {
     const float height = body.height;
-    const Rectangle totalHP = {body.x + height / 2 - hp / 2, body.y - height / 2, hp, body.width / 4};
-    Rectangle currentHpRect = {body.x + height / 2 - hp / 2, body.y - height / 2, currentHP, body.width / 4};
+    const float width = body.width;
+    const Rectangle totalHP = {body.x + width / 2 - hp / 2, body.y - height / 2, hp, width / 4};
+    Rectangle currentHpRect = {body.x + width / 2 - hp / 2, body.y - height / 2, currentHP, width / 4};
 
     DrawRectangleRec(totalHP, RAYWHITE);
     DrawRectangleRec(currentHpRect, RED);

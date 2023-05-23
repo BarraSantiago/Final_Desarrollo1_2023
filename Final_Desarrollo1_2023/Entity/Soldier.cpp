@@ -33,7 +33,7 @@ void Soldier::Attack()
     
     if (lastAttack <= 0)
     {
-        target->ModifyHealth(attack);
+        target->ModifyHealth(-attack);
         lastAttack = attackSpeed;
     }
     else

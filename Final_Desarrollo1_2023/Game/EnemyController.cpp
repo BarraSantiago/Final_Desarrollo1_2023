@@ -34,6 +34,7 @@ void EnemyController::Update()
             }
         }
         enemyUnit->Move();
+        enemyUnit->Attack();
     }
 }
 
