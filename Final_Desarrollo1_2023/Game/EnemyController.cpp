@@ -19,7 +19,8 @@ void EnemyController::Update()
     for (Unit* enemyUnit : enemyUnits)
     {
         Vector2 enemyPos = {enemyUnit->GetBody().x, enemyUnit->GetBody().y};
-            enemyUnit->SetTarget(playerUnits[0]);
+        enemyUnit->SetTarget(playerUnits[0]);
+        enemyUnit->SetDestination({playerUnits[0]->GetBody().x, playerUnits[0]->GetBody().y});
 
         for (Unit* playerUnit : playerUnits)
         {
@@ -29,9 +30,10 @@ void EnemyController::Update()
             if (Vector2Distance(playerPos, enemyPos) < Vector2Distance(targetPos, enemyPos))
             {
                 enemyUnit->SetTarget(playerUnit);
+                enemyUnit->SetDestination({playerUnit->GetBody().x, playerUnit->GetBody().y});
             }
         }
-        enemyUnit->SetDestination({enemyUnit->GetTarget()->GetBody().x, enemyUnit->GetTarget()->GetBody().y});
+        enemyUnit->Move();
     }
 }
 
