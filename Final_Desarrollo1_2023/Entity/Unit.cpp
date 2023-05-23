@@ -17,6 +17,26 @@ Unit::Unit(float hp, float attack, float range, float speed, Rectangle body, Tea
     destination = {body.x, body.y};
 }
 
+void VectorDifference(float& x, float& y, Vector2& b)
+{
+    float diff_x = x - b.x;
+    float diff_y = y - b.y;
+
+    float sqrmagX = diff_x * diff_x;
+
+    if (sqrmagX < FLT_EPSILON * FLT_EPSILON)
+    {
+        b.x = 0;
+    }
+
+    float sqrmagY = diff_y * diff_y;
+
+    if (sqrmagY < FLT_EPSILON * FLT_EPSILON)
+    {
+        b.y = 0;
+    }
+}
+
 void Unit::Move()
 {
     Vector2 normVector = Vector2Normalize(destination); //Normalize vector to use as unit's direction
@@ -24,22 +44,7 @@ void Unit::Move()
     body.x += normVector.x * speed * GetFrameTime();
     body.y += normVector.y * speed * GetFrameTime();
 
-    float diff_x = body.x - destination.x;
-    float diff_y = body.y - destination.y;
-
-    float sqrmagX = diff_x * diff_x;
-
-    if (sqrmagX < FLT_EPSILON * FLT_EPSILON)
-    {
-        destination.x = 0;
-    }
-
-    float sqrmagY = diff_y * diff_y;
-
-    if (sqrmagY < FLT_EPSILON * FLT_EPSILON)
-    {
-        destination.y = 0;
-    }
+    VectorDifference(body.x, body.y, destination);
 }
 
 void Unit::SetDestination(Vector2 newDestination)
