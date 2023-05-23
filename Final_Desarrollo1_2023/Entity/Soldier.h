@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include "Unit.h"
-
-class Soldier : public Unit
+namespace Entity
 {
-public:
-    Soldier();
-    Soldier(float hp, float attack, float range, float speed, Rectangle body, Team team);
-    ~Soldier() override;
-    void Attack() override;
-    void SetTarget(Unit* target) override;
-};
+    class Soldier : public Unit
+    {
+    public:
+        Soldier();
+        Soldier(float hp, float attack, float range, float speed, Rectangle body, Team team);
+        ~Soldier() override;
+        void Attack() override;
+        void SetTarget(Unit* target) override;
+    };
+}

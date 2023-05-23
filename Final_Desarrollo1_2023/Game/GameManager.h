@@ -17,7 +17,7 @@ private:
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
-    EnemyController* enemyController;
-    std::vector<Unit*> units;
+    AIManager::EnemyController* enemyController;
+    std::vector<Entity::Unit*> units;
     
 };

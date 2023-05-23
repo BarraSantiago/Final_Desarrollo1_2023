@@ -3,15 +3,19 @@
 
 #include "../Entity/Unit.h"
 
-class EnemyController
+namespace AIManager
 {
-public:
-    EnemyController(std::vector<Unit*> playerUnits);
-    ~EnemyController();
-    void Update();
-    void Draw();
-    std::vector<Unit*> GetEnemies();
-private:
-    std::vector<Unit*> enemyUnits;
-    std::vector<Unit*> playerUnits;
-};
+    class EnemyController
+    {
+    public:
+        EnemyController(std::vector<Entity::Unit*> playerUnits);
+        ~EnemyController();
+        void Update();
+        void Draw();
+        std::vector<Entity::Unit*> GetEnemies();
+
+    private:
+        std::vector<Entity::Unit*> enemyUnits;
+        std::vector<Entity::Unit*> playerUnits;
+    };
+}

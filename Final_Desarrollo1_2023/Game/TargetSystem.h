@@ -4,4 +4,7 @@
 
 #include "../entity/Unit.h"
 
-Unit* GetTarget(Vector2 position, std::vector<Unit*> possibleTargets);
+namespace targeting
+{
+    Entity::Unit* GetTarget(Vector2 position, std::vector<Entity::Unit*> possibleTargets);
+}

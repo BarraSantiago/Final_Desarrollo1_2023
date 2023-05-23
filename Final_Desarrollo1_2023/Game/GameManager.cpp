@@ -4,6 +4,7 @@
 #include "../Entity/Soldier.h"
 #include "TargetSystem.h"
 
+using namespace Entity;
 
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
@@ -11,7 +12,7 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     {
         units.push_back(new Soldier);
     }
-    enemyController = new EnemyController{units};
+    enemyController = new AIManager::EnemyController{units};
     units[0]->SetTarget(enemyController->GetEnemies()[0]);
 }
 
@@ -59,7 +60,7 @@ void GameManager::Update()
             if (unit->IsSelected())
             {
                 unit->SetDestination(mouseTarget);
-                unit->SetTarget(GetTarget(mouseTarget, enemyController->GetEnemies()));
+                unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
             }
         }
         unit->Attack();

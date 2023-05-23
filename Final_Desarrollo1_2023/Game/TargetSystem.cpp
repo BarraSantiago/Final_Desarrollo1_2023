@@ -4,19 +4,23 @@
 #include <raymath.h>
 
 #include "../Entity/Unit.h"
+using namespace Entity;
 
-Unit* GetTarget(Vector2 position, std::vector<Unit*> possibleTargets)
+namespace targeting
 {
-    Unit* newTarget = possibleTargets[0];
-    for (Unit* target : possibleTargets)
+    Unit* GetTarget(Vector2 position, std::vector<Unit*> possibleTargets)
     {
-        Vector2 targetPos = {newTarget->GetBody().x, newTarget->GetBody().y};
-        Vector2 playerPos = {target->GetBody().x, target->GetBody().y};
-
-        if (Vector2Distance(playerPos, position) < Vector2Distance(targetPos, position))
+        Unit* newTarget = possibleTargets[0];
+        for (Unit* target : possibleTargets)
         {
-            newTarget = target;
+            Vector2 targetPos = {newTarget->GetBody().x, newTarget->GetBody().y};
+            Vector2 playerPos = {target->GetBody().x, target->GetBody().y};
+
+            if (Vector2Distance(playerPos, position) < Vector2Distance(targetPos, position))
+            {
+                newTarget = target;
+            }
         }
+        return newTarget;
     }
-    return newTarget;
 }
