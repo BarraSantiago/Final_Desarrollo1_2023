@@ -60,6 +60,7 @@ void GameManager::Update()
             if (unit->IsSelected())
             {
                 unit->SetDestination(mouseTarget);
+                if(!enemyController->GetEnemies().empty())
                 unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
             }
         }
