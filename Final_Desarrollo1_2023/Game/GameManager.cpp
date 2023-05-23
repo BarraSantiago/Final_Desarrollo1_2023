@@ -7,7 +7,7 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
     for (int i = 0; i < 1; ++i)
     {
-        untis.push_back(new Soldier);
+        units.push_back(new Soldier);
     }
 }
 
@@ -45,7 +45,7 @@ void GameManager::Update()
     mouseSelection.width = fabs(boxEnd.x - boxStart.x);
     mouseSelection.height = fabs(boxEnd.y - boxStart.y);
 
-    for (Unit* unit : untis)
+    for (Unit* unit : units)
     {
         unit->SetSelected(CheckCollisionRecs(unit->GetBody(), mouseSelection));
 
@@ -55,14 +55,19 @@ void GameManager::Update()
         }
 
         unit->Move();
+        unit->ModifyHealth(-20*GetFrameTime());
     }
+    units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem) {
+        return !elem->IsAlive();
+    }), units.end());
+    
 }
 
 void GameManager::Draw()
 {
     BeginDrawing();
     ClearBackground(BLACK);
-    for (Unit* unit : untis)
+    for (Unit* unit : units)
     {
         unit->DrawBody();
         unit->DrawHP();

@@ -23,6 +23,7 @@ public:
     bool IsSelected();
     void SetSelected(bool select);
     Rectangle GetBody();
+    Team GetTeam();
     bool IsAlive();
     
 protected:

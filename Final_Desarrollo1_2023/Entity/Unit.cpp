@@ -88,6 +88,11 @@ Rectangle Unit::GetBody()
     return body;
 }
 
+Team Unit::GetTeam()
+{
+    return team;
+}
+
 bool Unit::IsAlive()
 {
     return alive;

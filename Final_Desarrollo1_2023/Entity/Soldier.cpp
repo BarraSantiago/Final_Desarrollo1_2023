@@ -1,5 +1,7 @@
 ﻿#include "Soldier.h"
 
+#include <raymath.h>
+
 Soldier::Soldier()
 {
     hp = 100;
@@ -26,6 +28,9 @@ Soldier::~Soldier()
 
 void Soldier::Attack(Unit* target)
 {
+    if (Vector2Distance({body.x, body.y}, {target->GetBody().x, target->GetBody().y}) > range) return;
+    if (target->GetTeam() == team) return;
+    
     if (lastAttack <= 0)
     {
         target->ModifyHealth(attack);

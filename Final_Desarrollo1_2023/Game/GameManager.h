@@ -16,6 +16,6 @@ private:
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
-    std::vector<Unit*> untis;
+    std::vector<Unit*> units;
     
 };
