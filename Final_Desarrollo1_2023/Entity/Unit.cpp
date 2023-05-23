@@ -4,58 +4,45 @@
 #include <cfloat>
 #include "raymath.h"
 
-Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), speed(50), selected(false), team(player),
-              destination({200, 200}),
-              body({200, 200, 100, 100})
+Unit::~Unit()
+= default;
+
+Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), attackSpeed(1), speed(50), selected(false), alive(true),
+              team(player), destination({200, 200}), body({200, 200, 100, 100})
 {
 }
 
-Unit::Unit(float hp, float attack, float range, float speed, Rectangle body, Team team) : hp(hp), currentHP(hp),
-    attack(attack),
-    range(range), speed(speed), selected(false), team(team), body(body)
+Unit::Unit(float hp, float attack, float range, float attackSpeed, float speed, Rectangle body, Team team) :
+    hp(hp), currentHP(hp), attack(attack), range(range), attackSpeed(attackSpeed),
+    speed(speed), selected(false), alive(true), team(team), body(body)
 {
     destination = {body.x, body.y};
 }
 
-void VectorDifference(float& x, float& y, Vector2& b)
-{
-    float diff_x = x - b.x;
-    float diff_y = y - b.y;
-
-    float sqrmagX = diff_x * diff_x;
-
-    if (sqrmagX < FLT_EPSILON * FLT_EPSILON)
-    {
-        b.x = 0;
-    }
-
-    float sqrmagY = diff_y * diff_y;
-
-    if (sqrmagY < FLT_EPSILON * FLT_EPSILON)
-    {
-        b.y = 0;
-    }
-}
-
 void Unit::Move()
 {
-    Vector2 normVector = Vector2Normalize(destination); //Normalize vector to use as unit's direction
+    Vector2 direction = Vector2Normalize(destination); //Normalize vector to use as unit's direction
 
-    body.x += normVector.x * speed * GetFrameTime();
-    body.y += normVector.y * speed * GetFrameTime();
+    if (!(Vector2Distance({body.x, body.y}, destination) < speed))
+    {
+        body.x += direction.x * speed * GetFrameTime();
 
-    VectorDifference(body.x, body.y, destination);
+        body.y += direction.y * speed * GetFrameTime();
+    }
 }
 
 void Unit::SetDestination(Vector2 newDestination)
 {
-    this->destination.x = newDestination.x - body.x;
-    this->destination.y = newDestination.y - body.y;
+    destination = Vector2Subtract(newDestination, {body.x, body.y});
 }
 
 void Unit::ModifyHealth(float hpModifier)
 {
     currentHP += hpModifier;
+    if (currentHP <= 0)
+    {
+        alive = false;
+    }
 }
 
 void Unit::DrawHP()
@@ -99,4 +86,9 @@ void Unit::SetSelected(bool select)
 Rectangle Unit::GetBody()
 {
     return body;
+}
+
+bool Unit::IsAlive()
+{
+    return alive;
 }

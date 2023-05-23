@@ -11,9 +11,9 @@ enum Team
 class Unit
 {
 public:
-    virtual ~Unit() = 0;
+    virtual ~Unit();
     Unit();
-    Unit(float hp, float attack, float range, float speed, Rectangle body, Team team);
+    Unit(float hp, float attack, float range, float attackSpeed, float speed, Rectangle body, Team team);
     void Move();
     void SetDestination(Vector2 newDestination);
     void ModifyHealth(float hpModifier);
@@ -23,15 +23,19 @@ public:
     bool IsSelected();
     void SetSelected(bool select);
     Rectangle GetBody();
+    bool IsAlive();
     
 protected:
     float hp;
     float currentHP;
     float attack;
     float range;
+    float attackSpeed;
+    float lastAttack;
     float speed;
     
     bool selected;
+    bool alive;
     
     Team team;
 

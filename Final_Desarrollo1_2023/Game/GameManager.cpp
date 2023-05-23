@@ -5,7 +5,10 @@
 
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
 {
-    untis.push_back(new Soldier);
+    for (int i = 0; i < 1; ++i)
+    {
+        untis.push_back(new Soldier);
+    }
 }
 
 GameManager::~GameManager()
@@ -27,14 +30,20 @@ void GameManager::Update()
         boxStart = GetMousePosition();
     }
 
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+    {
+        boxEnd = GetMousePosition();
+    }
+
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
         boxEnd = GetMousePosition();
-        mouseSelection.x = fmin(boxStart.x, boxEnd.x);
-        mouseSelection.y = fmin(boxStart.y, boxEnd.y);
-        mouseSelection.width = fabs(boxEnd.x - boxStart.x);
-        mouseSelection.height = fabs(boxEnd.y - boxStart.y);
     }
+
+    mouseSelection.x = fmin(boxStart.x, boxEnd.x);
+    mouseSelection.y = fmin(boxStart.y, boxEnd.y);
+    mouseSelection.width = fabs(boxEnd.x - boxStart.x);
+    mouseSelection.height = fabs(boxEnd.y - boxStart.y);
 
     for (Unit* unit : untis)
     {
@@ -46,7 +55,6 @@ void GameManager::Update()
         }
 
         unit->Move();
-        unit->ModifyHealth(-5 * GetFrameTime());
     }
 }
 
