@@ -3,6 +3,7 @@
 
 #include "../Entity/Soldier.h"
 #include "TargetSystem.h"
+#include "../Entity/Cavalry.h"
 
 using namespace Entity;
 
@@ -11,9 +12,11 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     for (int i = 0; i < 1; ++i)
     {
         units.push_back(new Soldier);
+        units.push_back(new Cavalry(50, 300));
     }
     enemyController = new AIManager::EnemyController{units};
     units[0]->SetTarget(enemyController->GetEnemies()[0]);
+    units[1]->SetTarget(enemyController->GetEnemies()[0]);
 }
 
 GameManager::~GameManager()

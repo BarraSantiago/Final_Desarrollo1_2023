@@ -154,6 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity\Cavalry.cpp" />
+    <ClCompile Include="Entity\CheckRange.cpp" />
     <ClCompile Include="Entity\Soldier.cpp" />
     <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="Game\EnemyController.cpp" />
@@ -162,6 +164,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entity\Cavalry.h" />
+    <ClInclude Include="Entity\CheckRange.h" />
     <ClInclude Include="Entity\Soldier.h" />
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="Game\EnemyController.h" />

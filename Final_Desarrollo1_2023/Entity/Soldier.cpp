@@ -2,6 +2,8 @@
 
 #include <raymath.h>
 
+#include "CheckRange.h"
+
 namespace Entity
 {
     Soldier::Soldier()
@@ -31,30 +33,17 @@ namespace Entity
 
     void Soldier::Attack()
     {
-        float unitX = body.x + body.width / 2;
-        float unitY = body.y + body.height / 2;
+        if (Check::InRange(body, target->GetBody(), range)) return;
+        if (Check::SameTeam(team, target->GetTeam())) return;
 
-        float targetX = target->GetBody().x + target->GetBody().width / 2;
-        float targetY = target->GetBody().y + target->GetBody().height / 2;
-
-        //if target isn't in range, no calculation is made
-        if (Vector2Distance({unitX, unitY}, {targetX, targetY}) > range) return;
-
-        if (target->GetTeam() == team) return;
-
-        if (lastAttack <= 0)
+        if (attackCooldown <= 0)
         {
             target->ModifyHealth(-attack);
-            lastAttack = attackSpeed;
+            attackCooldown = attackSpeed;
         }
         else
         {
-            lastAttack -= attackSpeed * GetFrameTime();
+            attackCooldown -= attackSpeed * GetFrameTime();
         }
-    }
-
-    void Soldier::SetTarget(Unit* target)
-    {
-        this->target = target;
     }
 }

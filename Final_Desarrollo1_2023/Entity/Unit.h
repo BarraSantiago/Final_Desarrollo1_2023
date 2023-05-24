@@ -26,7 +26,7 @@ namespace Entity
         Rectangle GetBody();
         Team GetTeam();
         bool IsAlive();
-        virtual void SetTarget(Unit* target) = 0;
+        void SetTarget(Unit* target);
         Unit* GetTarget();
 
     protected:
@@ -35,7 +35,7 @@ namespace Entity
         float attack;
         float range;
         float attackSpeed;
-        float lastAttack;
+        float attackCooldown;
         float speed;
 
         bool selected;
