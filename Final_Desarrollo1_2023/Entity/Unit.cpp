@@ -26,8 +26,10 @@ namespace Entity
     {
         Vector2 direction = Vector2Normalize(destination); //Normalize vector to use as unit's direction
 
-        if (!(Vector2Distance({body.x, body.y}, destination) < speed))
+        if (destinationDistance > 0)
         {
+            destinationDistance -= sqrt(direction.x * direction.x + direction.y * direction.y) / 2 * speed *
+                GetFrameTime();
             body.x += direction.x * speed * GetFrameTime();
 
             body.y += direction.y * speed * GetFrameTime();
@@ -37,6 +39,7 @@ namespace Entity
     void Unit::SetDestination(Vector2 newDestination)
     {
         destination = Vector2Subtract(newDestination, {body.x, body.y});
+        destinationDistance = Vector2Distance({body.x, body.y}, newDestination);
     }
 
     void Unit::ModifyHealth(float hpModifier)

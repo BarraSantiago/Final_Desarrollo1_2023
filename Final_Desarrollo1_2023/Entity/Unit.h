@@ -37,6 +37,7 @@ namespace Entity
         float attackSpeed;
         float attackCooldown;
         float speed;
+        float destinationDistance;
 
         bool selected;
         bool alive;
