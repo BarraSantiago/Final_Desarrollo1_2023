@@ -27,6 +27,17 @@ namespace Entity
         this->team = team;
     }
 
+    Soldier::Soldier(Vector2 position, Team team)
+    {
+        hp = 100;
+        attack = 20;
+        speed = 50;
+        attackSpeed = 1;
+        body = {position.x, position.y, 50, 75};
+        range = 25 + (body.width + body.height) / 2;
+        this->team = team;
+    }
+
     Soldier::~Soldier()
     {
     }
@@ -36,14 +47,17 @@ namespace Entity
         if (Check::InRange(body, target->GetBody(), range)) return;
         if (Check::SameTeam(team, target->GetTeam())) return;
 
-        if (attackCooldown <= 0)
-        {
-            target->ModifyHealth(-attack);
-            attackCooldown = attackSpeed;
-        }
-        else
+        if (!target->IsAlive()) return;
+
+        //if attack is in cooldown, no extra calculation is made
+        if (attackCooldown > 0)
         {
             attackCooldown -= attackSpeed * GetFrameTime();
+            return;
         }
+
+        target->ModifyHealth(-attack);
+        attackCooldown = attackSpeed;
+        
     }
 }
