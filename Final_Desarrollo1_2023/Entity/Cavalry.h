@@ -15,7 +15,7 @@ namespace Entity
         float speedAux;
         float specialSpeed;
         float attackFrames;
-        bool isAttacking;
         Vector2 destinationAux;
+        void SetDestinationToTarget();
     };
 }

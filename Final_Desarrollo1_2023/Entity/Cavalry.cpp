@@ -6,37 +6,40 @@
 
 namespace Entity
 {
-    Cavalry::Cavalry(): isAttacking(false), destinationAux()
+    float attackFramesAux = 5;
+
+    Cavalry::Cavalry(): destinationAux()
     {
         hp = 75;
         attack = 35;
         speed = 50;
+        specialSpeed = speed * 4;
         speedAux = speed;
         attackSpeed = 1;
-        specialSpeed = 120;
-        body = {100, 100, 75, 50};
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
+
+        body = {100, 100, 75, 50};
+
         destination = {0, 0};
     }
 
-    Cavalry::Cavalry(float x, float y): isAttacking(false), destinationAux()
+    Cavalry::Cavalry(float x, float y): destinationAux()
     {
         hp = 75;
         attack = 35;
         speed = 50;
+        specialSpeed = speed * 4;
         speedAux = speed;
         attackSpeed = 1;
-        specialSpeed = 120;
         body = {x, y, 70, 50};
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
     }
 
-    Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team): specialSpeed(100),
-        isAttacking(false),
-        destinationAux()
+    Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team):
+        specialSpeed(speed * 4), destinationAux()
     {
         this->hp = hp;
         this->attack = attack;
@@ -56,11 +59,10 @@ namespace Entity
         if (Check::SameTeam(team, target->GetTeam())) return;
 
         //Finishes special attack behaviour
-        if (attackFrames <= 0 && isAttacking)
+        if (attackFrames <= 0)
         {
             speed = speedAux;
             destination = destinationAux;
-            isAttacking = false;
         }
         if (!target->IsAlive()) return;
 
@@ -68,24 +70,30 @@ namespace Entity
         if (attackCooldown > 0)
         {
             attackCooldown -= attackSpeed * GetFrameTime();
+            attackFrames -= GetFrameTime();
             return;
         }
 
+        SetDestinationToTarget();
+
+        speed = specialSpeed;
+
+        target->ModifyHealth(-attack);
+
+        attackCooldown = attackSpeed;
+        destinationAux = destination;
+        attackFrames = attackSpeed / 2;
+    }
+
+    void Cavalry::SetDestinationToTarget()
+    {
         float unitX = body.x + body.width / 2;
         float unitY = body.y + body.height / 2;
 
         float targetX = target->GetBody().x + target->GetBody().width / 2;
         float targetY = target->GetBody().y + target->GetBody().height / 2;
 
-
-        target->ModifyHealth(-attack);
-
-        attackCooldown = attackSpeed;
-        destinationAux = destination;
-
         //sets direction to enemy unit
-        destination = Vector2Subtract({targetX + range / 2, targetY + range / 2}, {unitX, unitY});
-        speed = specialSpeed;
-        isAttacking = true;
+        destination = Vector2Subtract({targetX, targetY}, {unitX, unitY});
     }
 }
