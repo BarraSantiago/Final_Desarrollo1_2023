@@ -14,6 +14,10 @@ namespace AIManager
         void Draw();
         std::vector<Entity::Unit*> GetEnemies();
 
+        void SpawnArcher();
+        void SpawnCavalry();
+        void SpawnSoldier();
+
     private:
         std::vector<Entity::Unit*> enemyUnits;
         std::vector<Entity::Unit*> playerUnits;

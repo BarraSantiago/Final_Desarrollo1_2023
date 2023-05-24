@@ -11,7 +11,7 @@ namespace AIManager
     EnemyController::EnemyController(std::vector<Unit*> playerUnits)
     {
         this->playerUnits = playerUnits;
-        enemyUnits.push_back(new Soldier{100, 15, 20, 30, {500, 500, 50, 75}, enemy});
+        enemyUnits.push_back(new Soldier{{500, 500}, enemy});
     }
 
     EnemyController::~EnemyController()
@@ -45,6 +45,7 @@ namespace AIManager
             return !elem->IsAlive();
         }), enemyUnits.end());
     }
+
 
     void EnemyController::Draw()
     {
