@@ -1,6 +1,7 @@
 #include "Archer.h"
 
 #include "../CheckRange.h"
+#include "../Objects/Projectile.h"
 
 Archer::Archer(Entity::Team team)
 {
@@ -57,6 +58,6 @@ void Archer::Attack()
         return;
     }
 
-    target->ModifyHealth(-attack);
+    Objects::Projectile* projectile = new Objects::Projectile({body.x, body.y}, team);
     attackCooldown = attackSpeed;
 }

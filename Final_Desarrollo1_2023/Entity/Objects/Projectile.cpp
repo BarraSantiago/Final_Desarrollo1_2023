@@ -4,21 +4,21 @@
 
 namespace Objects
 {
-    Projectile::Projectile(): speed(130), damage(50), hasTarget(false), isAlive(true), direction({0, 0}),
+    Projectile::Projectile(): speed(130), damage(50), hasTarget(false), alive(true), direction({0, 0}),
                               team(Entity::neutral),
                               target(nullptr)
     {
     }
 
     Projectile::Projectile(float speed, float damage, Rectangle body, Vector2 direction, Entity::Team team):
-        speed(speed), damage(damage), hasTarget(false), isAlive(true),
+        speed(speed), damage(damage), hasTarget(false), alive(true),
         direction(direction), team(team), target(nullptr)
     {
         this->body = body;
     }
 
     Projectile::Projectile(Vector2 direction, Entity::Team team): speed(130), damage(50), hasTarget(false),
-                                                                  isAlive(true), target(nullptr)
+                                                                  alive(true), target(nullptr)
     {
         this->direction = direction;
         this->team = team;
@@ -64,7 +64,14 @@ namespace Objects
 
     void Projectile::Collide()
     {
-        target->ModifyHealth(-damage);
+        if(!hasTarget) return;
         
+        target->ModifyHealth(-damage);
+        alive = false;
+    }
+
+    bool Projectile::isAlive()
+    {
+        return alive;
     }
 }

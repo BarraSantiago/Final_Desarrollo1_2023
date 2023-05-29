@@ -22,13 +22,14 @@ namespace Objects
         void SetTarget(Entity::Unit* target);
         void DrawBody() override;
         void Collide();
+        bool isAlive();
 
     private:
         float speed;
         float damage;
 
         bool hasTarget;
-        bool isAlive;
+        bool alive;
 
         Vector2 direction{};
         Entity::Team team;

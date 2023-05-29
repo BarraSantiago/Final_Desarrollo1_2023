@@ -19,6 +19,8 @@ namespace AIManager
         void SpawnSoldier(Vector2 position);
 
     private:
+        void RetargetUnits(Entity::Unit* unit);
+        
         std::vector<Entity::Unit*> enemyUnits;
         std::vector<Entity::Unit*> playerUnits;
     };
