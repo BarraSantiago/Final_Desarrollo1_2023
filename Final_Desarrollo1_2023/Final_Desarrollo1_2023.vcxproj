@@ -156,8 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Entity\CheckRange.cpp" />
     <ClCompile Include="Entity\DefaultEntity.cpp" />
-    <ClCompile Include="Entity\Entity.cpp" />
-    <ClCompile Include="Entity\Objects\Proyectile.cpp">
+    <ClCompile Include="Entity\Objects\Projectile.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -498,8 +497,7 @@
   <ItemGroup>
     <ClInclude Include="Entity\CheckRange.h" />
     <ClInclude Include="Entity\DefaultEntity.h" />
-    <ClInclude Include="Entity\Entity.h" />
-    <ClInclude Include="Entity\Objects\Proyectile.h" />
+    <ClInclude Include="Entity\Objects\Projectile.h" />
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="Entity\Units\Archer.h" />
     <ClInclude Include="Entity\Units\Cavalry.h" />

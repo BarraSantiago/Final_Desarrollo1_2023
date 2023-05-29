@@ -1,9 +1,9 @@
 ﻿#include "GameManager.h"
 #include <cmath>
 
-#include "../Entity/Soldier.h"
+#include "../Entity/Units/Soldier.h"
 #include "TargetSystem.h"
-#include "../Entity/Cavalry.h"
+#include "../Entity/Units/Cavalry.h"
 
 using namespace Entity;
 
@@ -12,11 +12,16 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     for (int i = 0; i < 1; ++i)
     {
         units.push_back(new Soldier);
-        units.push_back(new Cavalry(50, 300));
+        units.push_back(new Cavalry({50, 300}, player));
     }
     enemyController = new AIManager::EnemyController{units};
-    units[0]->SetTarget(enemyController->GetEnemies()[0]);
-    units[1]->SetTarget(enemyController->GetEnemies()[0]);
+    for (Unit* unit : units)
+    {
+        unit->SetTarget(enemyController->GetEnemies()[0]);
+    }
+    
+    enemyController->SpawnCavalry({600,600});
+    enemyController->SpawnCavalry({700,600});
 }
 
 GameManager::~GameManager()
@@ -63,8 +68,8 @@ void GameManager::Update()
             if (unit->IsSelected())
             {
                 unit->SetDestination(mouseTarget);
-                if(!enemyController->GetEnemies().empty())
-                unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
+                if (!enemyController->GetEnemies().empty())
+                    unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
             }
         }
         unit->Attack();

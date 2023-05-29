@@ -2,7 +2,9 @@
 
 #include <raymath.h>
 
-#include "../Entity/Soldier.h"
+#include "../Entity/Units/Archer.h"
+#include "../Entity/Units/Cavalry.h"
+#include "../Entity/Units/Soldier.h"
 
 using namespace Entity;
 
@@ -59,5 +61,23 @@ namespace AIManager
     std::vector<Unit*> EnemyController::GetEnemies()
     {
         return enemyUnits;
+    }
+
+    void EnemyController::SpawnArcher(Vector2 position)
+    {
+        enemyUnits.push_back(new Archer{position, enemy});
+        
+    }
+
+    void EnemyController::SpawnCavalry(Vector2 position)
+    {
+        enemyUnits.push_back(new Cavalry{position, enemy});
+
+    }
+
+    void EnemyController::SpawnSoldier(Vector2 position)
+    {
+        enemyUnits.push_back(new Soldier{position, enemy});
+
     }
 }

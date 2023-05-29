@@ -3,16 +3,11 @@
 
 namespace Entity
 {
-    enum Team
-    {
-        player,
-        enemy,
-        neutral
-    };
+    
     class Unit : public DefaultEntity
     {
     public:
-        virtual ~Unit();
+        ~Unit() override;
         Unit();
         Unit(float hp, float attack, float range, float attackSpeed, float speed, Rectangle body, Team team);
         void Move();

@@ -1,7 +1,5 @@
 ﻿#include "Soldier.h"
 
-#include <raymath.h>
-
 #include "../CheckRange.h"
 
 namespace Entity

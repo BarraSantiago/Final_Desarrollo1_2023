@@ -24,7 +24,7 @@ namespace Entity
         destination = {0, 0};
     }
 
-    Cavalry::Cavalry(float x, float y): destinationAux()
+    Cavalry::Cavalry(Vector2 position, Team team): destinationAux()
     {
         hp = 75;
         attack = 35;
@@ -32,10 +32,11 @@ namespace Entity
         specialSpeed = speed * 4;
         speedAux = speed;
         attackSpeed = 1;
-        body = {x, y, 70, 50};
+        body = {position.x, position.y, 70, 50};
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
+        this->team = team;
     }
 
     Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team):
