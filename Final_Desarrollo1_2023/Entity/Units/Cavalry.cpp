@@ -2,7 +2,7 @@
 
 #include <raymath.h>
 
-#include "CheckRange.h"
+#include "../CheckRange.h"
 
 namespace Entity
 {

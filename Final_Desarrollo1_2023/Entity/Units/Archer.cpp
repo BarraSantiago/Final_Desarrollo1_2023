@@ -1,6 +1,6 @@
 #include "Archer.h"
 
-#include "CheckRange.h"
+#include "../CheckRange.h"
 
 Archer::Archer(Entity::Team team)
 {
