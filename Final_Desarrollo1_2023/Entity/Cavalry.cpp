@@ -55,15 +55,15 @@ namespace Entity
 
     void Cavalry::Attack()
     {
-        if (Check::InRange(body, target->GetBody(), range)) return;
-        if (Check::SameTeam(team, target->GetTeam())) return;
-
-        //Finishes special attack behaviour
         if (attackFrames <= 0)
         {
             speed = speedAux;
             destination = destinationAux;
         }
+        if (Check::InRange(body, target->GetBody(), range)) return;
+        if (Check::SameTeam(team, target->GetTeam())) return;
+
+        //Finishes special attack behaviour
         if (!target->IsAlive()) return;
 
         //if attack is in cooldown, no extra calculation is made

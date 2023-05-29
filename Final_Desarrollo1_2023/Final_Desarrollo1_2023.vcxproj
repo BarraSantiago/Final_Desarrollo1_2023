@@ -157,6 +157,7 @@
     <ClCompile Include="Entity\Archer.cpp" />
     <ClCompile Include="Entity\Cavalry.cpp" />
     <ClCompile Include="Entity\CheckRange.cpp" />
+    <ClCompile Include="Entity\DefaultEntity.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\Proyectile.cpp" />
     <ClCompile Include="Entity\Soldier.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Entity\Archer.h" />
     <ClInclude Include="Entity\Cavalry.h" />
     <ClInclude Include="Entity\CheckRange.h" />
+    <ClInclude Include="Entity\DefaultEntity.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\Proyectile.h" />
     <ClInclude Include="Entity\Soldier.h" />

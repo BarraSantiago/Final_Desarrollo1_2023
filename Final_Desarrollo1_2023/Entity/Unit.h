@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include <raylib.h>
+#include "DefaultEntity.h"
+
 namespace Entity
 {
     enum Team
@@ -8,8 +9,7 @@ namespace Entity
         enemy,
         neutral
     };
-
-    class Unit
+    class Unit : public DefaultEntity
     {
     public:
         virtual ~Unit();
@@ -19,15 +19,15 @@ namespace Entity
         void SetDestination(Vector2 newDestination);
         void ModifyHealth(float hpModifier);
         void DrawHP();
-        void DrawBody();
         virtual void Attack() = 0;
         bool IsSelected();
-        void SetSelected(bool select);
-        Rectangle GetBody();
+        Unit* GetTarget();
         Team GetTeam();
         bool IsAlive();
+        void SetSelected(bool select);
         void SetTarget(Unit* target);
-        Unit* GetTarget();
+        Rectangle GetBody() override;
+        void DrawBody() override;
 
     protected:
         float hp;
@@ -37,7 +37,8 @@ namespace Entity
         float attackSpeed;
         float attackCooldown;
         float speed;
-        float destinationDistance;
+        float distanceX;
+        float distanceY;
 
         bool selected;
         bool alive;
@@ -48,6 +49,5 @@ namespace Entity
 
         Vector2 destination{};
 
-        Rectangle body;
     };
 }

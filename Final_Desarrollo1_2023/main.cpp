@@ -1,5 +1,6 @@
 ﻿#include "raylib.h"
 #include "Game/GameManager.h"
+
 int main()
 {
     InitWindow(1080, 720, "se");
