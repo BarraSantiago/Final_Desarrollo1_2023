@@ -8,7 +8,7 @@ namespace Entity
 {
     float attackFramesAux = 5;
 
-    Cavalry::Cavalry(): destinationAux()
+    Cavalry::Cavalry(): inAttack(false), destinationAux()
     {
         hp = 75;
         attack = 35;
@@ -56,12 +56,15 @@ namespace Entity
 
     void Cavalry::Attack()
     {
+        if(target == nullptr) return;
+
         if (attackCooldown > 0)
         {
             attackCooldown -= attackSpeed * GetFrameTime();
             attackFrames -= GetFrameTime();
             return;
         }
+
         if (attackFrames <= 0 && inAttack)
         {
             inAttack = false;
@@ -69,15 +72,13 @@ namespace Entity
             destination = destinationAux;
         }
         //if attack is in cooldown, no extra calculation is made
-        
+
         if (Check::InRange(body, target->GetBody(), range)) return;
         if (Check::SameTeam(team, target->GetTeam())) return;
 
-        
+
         //Finishes special attack behaviour
         if (!target->IsAlive()) return;
-
-        
 
         SetDestinationToTarget();
 

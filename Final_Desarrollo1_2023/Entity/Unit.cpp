@@ -8,9 +8,9 @@ namespace Entity
     Unit::~Unit()
     = default;
 
-    Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), attackSpeed(1), speed(50), selected(false),
-                  alive(true),
-                  team(player), destination({200, 200})
+    Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), attackSpeed(1), attackCooldown(1), speed(50),
+                  distanceX(0), distanceY(0), selected(false), alive(true), team(player),
+                  target(nullptr), destination({200, 200})
     {
         body = {200, 200, 100, 100};
     }

@@ -1,8 +1,10 @@
 ﻿#include "GameManager.h"
 #include <cmath>
+#include <iostream>
 
 #include "../Entity/Units/Soldier.h"
 #include "TargetSystem.h"
+#include "../Entity/Units/Archer.h"
 #include "../Entity/Units/Cavalry.h"
 
 using namespace Entity;
@@ -18,8 +20,8 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     {
         unit->SetTarget(enemyController->GetEnemies()[0]);
     }
-    
-    enemyController->SpawnCavalry({111,111});
+
+    enemyController->SpawnCavalry({111, 111});
 }
 
 GameManager::~GameManager()
@@ -35,6 +37,59 @@ void GameManager::GameController()
 }
 
 void GameManager::Update()
+{
+    actionPerformed = false;
+    MouseManager();
+
+    UnitsManager();
+    if (!actionPerformed) SpawnManager(GetCharPressed());
+    RemoveDeadUnits();
+
+
+    enemyController->Update();
+}
+
+void GameManager::Draw()
+{
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    enemyController->Draw();
+    for (Unit* unit : units)
+    {
+        unit->DrawBody();
+        unit->DrawHP();
+    }
+
+    DrawRectangleLinesEx(mouseSelection, 4, RED);
+    EndDrawing();
+}
+
+void GameManager::SpawnManager(char input)
+{
+    switch (input)
+    {
+    case 'q':
+    case 'Q':
+        units.push_back(new Soldier{GetMouseDelta(), player});
+        actionPerformed = true;
+        break;
+    case 'w':
+    case 'W':
+        units.push_back(new Cavalry{GetMouseDelta(), player});
+        actionPerformed = true;
+        break;
+    case 'e':
+    case 'E':
+        units.push_back(new Archer{GetMouseDelta(), player});
+        actionPerformed = true;
+        break;
+    default:
+        break;
+    }   
+}
+
+void GameManager::MouseManager()
 {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -55,7 +110,10 @@ void GameManager::Update()
     mouseSelection.y = fmin(boxStart.y, boxEnd.y);
     mouseSelection.width = fabs(boxEnd.x - boxStart.x);
     mouseSelection.height = fabs(boxEnd.y - boxStart.y);
+}
 
+void GameManager::UnitsManager()
+{
     for (Unit* unit : units)
     {
         unit->SetSelected(CheckCollisionRecs(unit->GetBody(), mouseSelection));
@@ -73,26 +131,12 @@ void GameManager::Update()
         unit->Attack();
         unit->Move();
     }
+}
+
+void GameManager::RemoveDeadUnits()
+{
     units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem)
     {
         return !elem->IsAlive();
     }), units.end());
-
-    enemyController->Update();
-}
-
-void GameManager::Draw()
-{
-    BeginDrawing();
-    ClearBackground(BLACK);
-
-    enemyController->Draw();
-    for (Unit* unit : units)
-    {
-        unit->DrawBody();
-        unit->DrawHP();
-    }
-
-    DrawRectangleLinesEx(mouseSelection, 4, RED);
-    EndDrawing();
 }

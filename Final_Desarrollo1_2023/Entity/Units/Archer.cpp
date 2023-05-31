@@ -46,17 +46,17 @@ Archer::~Archer()
 
 void Archer::Attack()
 {
-    if (Check::InRange(body, target->GetBody(), range)) return;
-    if (Check::SameTeam(team, target->GetTeam())) return;
-
-    if (!target->IsAlive()) return;
-
-    //if attack is in cooldown, no extra calculation is made
     if (attackCooldown > 0)
     {
         attackCooldown -= attackSpeed * GetFrameTime();
         return;
     }
+    if(target == nullptr) return;
+    if (Check::InRange(body, target->GetBody(), range)) return;
+    if (Check::SameTeam(team, target->GetTeam())) return;
+
+    //if attack is in cooldown, no extra calculation is made
+    
 
     Objects::Projectile* projectile = new Objects::Projectile({body.x, body.y}, team);
     attackCooldown = attackSpeed;
