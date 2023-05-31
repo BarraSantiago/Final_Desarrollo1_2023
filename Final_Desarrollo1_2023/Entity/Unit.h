@@ -9,7 +9,6 @@ namespace Entity
     public:
         ~Unit() override;
         Unit();
-        Unit(float hp, float attack, float range, float attackSpeed, float speed, Rectangle body, Team team);
         void Move();
         void SetDestination(Vector2 newDestination);
         void ModifyHealth(float hpModifier);

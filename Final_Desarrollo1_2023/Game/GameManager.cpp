@@ -3,6 +3,7 @@
 
 #include "../Entity/Units/Soldier.h"
 #include "TargetSystem.h"
+#include "../Entity/Units/Archer.h"
 #include "../Entity/Units/Cavalry.h"
 
 using namespace Entity;
@@ -12,6 +13,7 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     for (int i = 0; i < 1; ++i)
     {
         units.push_back(new Soldier);
+        units.push_back(new Archer{{300, 150}, player});
         units.push_back(new Cavalry({50, 300}, player));
     }
     enemyController = new AIManager::EnemyController{units};
@@ -19,9 +21,9 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd()
     {
         unit->SetTarget(enemyController->GetEnemies()[0]);
     }
-    
-    enemyController->SpawnCavalry({600,600});
-    enemyController->SpawnCavalry({700,600});
+
+    enemyController->SpawnCavalry({600, 600});
+    enemyController->SpawnCavalry({700, 600});
 }
 
 GameManager::~GameManager()
@@ -75,6 +77,10 @@ void GameManager::Update()
         unit->Attack();
         unit->Move();
     }
+    for (Objects::Projectile* projectile : Archer::GetProjectiles())
+    {
+        projectile->Move();
+    }
     units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem)
     {
         return !elem->IsAlive();
@@ -94,7 +100,10 @@ void GameManager::Draw()
         unit->DrawBody();
         unit->DrawHP();
     }
-
+    for (Objects::Projectile* projectile : Archer::GetProjectiles())
+    {
+        projectile->DrawBody();
+    }
     DrawRectangleLinesEx(mouseSelection, 4, RED);
     EndDrawing();
 }
