@@ -3,9 +3,6 @@
 #include "../CheckRange.h"
 #include "../Objects/Projectile.h"
 
-Archer::Archer()
-= default;
-
 Archer::Archer(Entity::Team team)
 {
     hp = 100;
@@ -61,11 +58,6 @@ void Archer::Attack()
         return;
     }
 
-    projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, team));
+    Objects::Projectile* projectile = new Objects::Projectile({body.x, body.y}, team);
     attackCooldown = attackSpeed;
-}
-
-std::vector<Objects::Projectile*> Archer::GetProjectiles()
-{
-    return projectiles;
 }

@@ -155,7 +155,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entity\CheckRange.cpp" />
-    <ClCompile Include="Entity\DefaultEntity.cpp" />
     <ClCompile Include="Entity\Objects\Projectile.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

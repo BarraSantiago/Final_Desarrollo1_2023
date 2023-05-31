@@ -6,7 +6,7 @@ namespace Entity
 {
     Soldier::Soldier()
     {
-        hp = 100;
+        hp = 150;
         attack = 20;
         speed = 50;
         attackSpeed = 1;

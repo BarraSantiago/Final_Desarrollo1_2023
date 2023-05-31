@@ -56,24 +56,28 @@ namespace Entity
 
     void Cavalry::Attack()
     {
-        if (attackFrames <= 0)
-        {
-            speed = speedAux;
-            destination = destinationAux;
-        }
-        if (Check::InRange(body, target->GetBody(), range)) return;
-        if (Check::SameTeam(team, target->GetTeam())) return;
-
-        //Finishes special attack behaviour
-        if (!target->IsAlive()) return;
-
-        //if attack is in cooldown, no extra calculation is made
         if (attackCooldown > 0)
         {
             attackCooldown -= attackSpeed * GetFrameTime();
             attackFrames -= GetFrameTime();
             return;
         }
+        if (attackFrames <= 0 && inAttack)
+        {
+            inAttack = false;
+            speed = speedAux;
+            destination = destinationAux;
+        }
+        //if attack is in cooldown, no extra calculation is made
+        
+        if (Check::InRange(body, target->GetBody(), range)) return;
+        if (Check::SameTeam(team, target->GetTeam())) return;
+
+        
+        //Finishes special attack behaviour
+        if (!target->IsAlive()) return;
+
+        
 
         SetDestinationToTarget();
 
@@ -84,6 +88,13 @@ namespace Entity
         attackCooldown = attackSpeed;
         destinationAux = destination;
         attackFrames = attackSpeed / 2;
+        inAttack = true;
+    }
+
+    void Cavalry::SetDestination(Vector2 newDestination)
+    {
+        if (attackCooldown > 0) return;
+        Unit::SetDestination(newDestination);
     }
 
     void Cavalry::SetDestinationToTarget()

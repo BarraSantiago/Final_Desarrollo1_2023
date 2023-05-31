@@ -10,7 +10,7 @@ namespace Entity
         ~Unit() override;
         Unit();
         void Move();
-        void SetDestination(Vector2 newDestination);
+        virtual void SetDestination(Vector2 newDestination);
         void ModifyHealth(float hpModifier);
         void DrawHP();
         virtual void Attack() = 0;
