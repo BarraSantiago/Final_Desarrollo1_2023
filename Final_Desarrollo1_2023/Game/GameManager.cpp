@@ -71,17 +71,17 @@ void GameManager::SpawnManager(char input)
     {
     case 'q':
     case 'Q':
-        units.push_back(new Soldier{GetMouseDelta(), player});
+        units.push_back(new Soldier{GetMousePosition(), player});
         actionPerformed = true;
         break;
     case 'w':
     case 'W':
-        units.push_back(new Cavalry{GetMouseDelta(), player});
+        units.push_back(new Cavalry{GetMousePosition(), player});
         actionPerformed = true;
         break;
     case 'e':
     case 'E':
-        units.push_back(new Archer{GetMouseDelta(), player});
+        units.push_back(new Archer{GetMousePosition(), player});
         actionPerformed = true;
         break;
     default:
@@ -128,8 +128,12 @@ void GameManager::UnitsManager()
                     unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
             }
         }
-        unit->Attack();
         unit->Move();
+        unit->Attack();
+    }
+    for (Objects::Projectile* projectile : Archer::GetProjectiles())
+    {
+        projectile->Move();
     }
 }
 

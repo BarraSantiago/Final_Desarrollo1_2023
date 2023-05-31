@@ -2,6 +2,7 @@
 
 #include "../CheckRange.h"
 #include "../Objects/Projectile.h"
+std::vector<Objects::Projectile*> Archer::projectiles;
 
 Archer::Archer(Entity::Team team)
 {
@@ -41,23 +42,26 @@ Archer::Archer(Vector2 position, Entity::Team team)
 }
 
 Archer::~Archer()
-{
-}
+= default;
 
 void Archer::Attack()
 {
+    //if attack is in cooldown, no extra calculation is made
     if (attackCooldown > 0)
     {
         attackCooldown -= attackSpeed * GetFrameTime();
         return;
     }
-    if(target == nullptr) return;
+    if (target == nullptr) return;
     if (Check::InRange(body, target->GetBody(), range)) return;
     if (Check::SameTeam(team, target->GetTeam())) return;
 
-    //if attack is in cooldown, no extra calculation is made
-    
+    projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, team));
 
-    Objects::Projectile* projectile = new Objects::Projectile({body.x, body.y}, team);
     attackCooldown = attackSpeed;
+}
+
+std::vector<Objects::Projectile*> Archer::GetProjectiles()
+{
+    return projectiles;
 }
