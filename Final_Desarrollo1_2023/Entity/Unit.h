@@ -41,6 +41,7 @@ namespace Entity
 
         Unit* target;
 
+        Vector2 newDestination{};
         Vector2 destination{};
 
     };

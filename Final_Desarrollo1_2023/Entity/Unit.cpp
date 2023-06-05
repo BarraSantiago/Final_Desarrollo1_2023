@@ -14,25 +14,25 @@ namespace Entity
     {
         body = {200, 200, 100, 100};
     }
-
+    bool Vector2IsEqual(const Vector2& vec1, const Vector2& vec2, float tolerance = 0.01f) {
+        return (std::fabs(vec1.x - vec2.x) <= tolerance) && (std::fabs(vec1.y - vec2.y) <= tolerance);
+    }
     void Unit::Move()
     {
-        Vector2 direction = Vector2Normalize(destination); //Normalize vector to use as unit's direction
-
-        if (distanceX > 0)
+        Vector2 position = {body.x, body.y};
+        if (!Vector2IsEqual(position, newDestination))
         {
-            distanceX -= sqrt(direction.x * direction.x) * speed * GetFrameTime();
-            body.x += direction.x * speed * GetFrameTime();
-        }
-        if (distanceY > 0)
-        {
-            distanceY -= sqrt(direction.y * direction.y) * speed * GetFrameTime();
-            body.y += direction.y * speed * GetFrameTime();
+            float distance = speed * GetFrameTime();
+            Vector2 movementDelta = Vector2Scale(Vector2Normalize(destination), distance);
+            position = Vector2Add({body.x, body.y}, movementDelta);
+            body.x = position.x;
+            body.y = position.y;
         }
     }
 
     void Unit::SetDestination(Vector2 newDestination)
     {
+        this->newDestination = newDestination;
         destination = Vector2Subtract(newDestination, {body.x, body.y});
         distanceX = Vector2Distance({body.x, 0}, newDestination);
         distanceY = Vector2Distance({0, body.y}, newDestination);
