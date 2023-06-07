@@ -76,6 +76,11 @@ namespace Entity
         DrawRectangleRec(body, color);
     }
 
+    float Unit::GetRange() const
+    {
+        return range;
+    }
+
     bool Unit::IsSelected()
     {
         return selected;

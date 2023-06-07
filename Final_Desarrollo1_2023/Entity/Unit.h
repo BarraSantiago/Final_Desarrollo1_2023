@@ -22,7 +22,8 @@ namespace Entity
         void SetTarget(Unit* target);
         Rectangle GetBody() override;
         void DrawBody() override;
-
+        float GetRange() const;
+        
     protected:
         float hp;
         float currentHP;
