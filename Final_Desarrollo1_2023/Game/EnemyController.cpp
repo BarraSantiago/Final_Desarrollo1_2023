@@ -10,10 +10,21 @@ using namespace Entity;
 
 namespace AIManager
 {
+    bool CheckDistance(Unit* unit, Unit* unit2, float distance)
+    {
+        Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
+        Vector2 unit2Pos = {unit2->GetBody().x, unit2->GetBody().y};
+        return Vector2Distance(unit1Pos, unit2Pos) < distance;
+    }
+
     EnemyController::EnemyController(std::vector<Unit*> playerUnits)
     {
         this->playerUnits = playerUnits;
         enemyUnits.push_back(new Soldier{{500, 500}, enemy});
+        for (Unit* enemy : enemyUnits)
+        {
+            enemy->SetTarget(playerUnits[0]);
+        }
     }
 
     EnemyController::~EnemyController()
@@ -24,8 +35,10 @@ namespace AIManager
     {
         for (Unit* unit : enemyUnits)
         {
-            RetargetUnits(unit);
-            unit->Move();
+            UnitTargeting(unit);
+            
+            if (CheckDistance(unit, unit->GetTarget(), unit->GetRange()*5))
+                unit->Move();
             unit->Attack();
         }
         enemyUnits.erase(std::remove_if(enemyUnits.begin(), enemyUnits.end(), [](Unit* elem)
@@ -64,20 +77,21 @@ namespace AIManager
         enemyUnits.push_back(new Soldier{position, enemy});
     }
 
-    void EnemyController::RetargetUnits(Unit* unit)
+    void EnemyController::UnitTargeting(Unit* unit)
     {
         Vector2 enemyPos = {unit->GetBody().x, unit->GetBody().y};
-        unit->SetTarget(playerUnits[0]);
         unit->SetDestination({playerUnits[0]->GetBody().x, playerUnits[0]->GetBody().y});
 
         for (Unit* playerUnit : playerUnits)
         {
-            if(!playerUnit->IsAlive()) continue;
-            
             Vector2 targetPos = {unit->GetTarget()->GetBody().x, unit->GetTarget()->GetBody().y};
-            Vector2 playerPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
 
-            if (Vector2Distance(playerPos, enemyPos) < Vector2Distance(targetPos, enemyPos))
+            if (!playerUnit->IsAlive()) continue;
+
+            //Checks for the nearest target, compares the distance between the current target with the new target
+            float distanceBetweenTargets = Vector2Distance(targetPos, enemyPos);
+
+            if (CheckDistance(unit, playerUnit, distanceBetweenTargets))
             {
                 unit->SetTarget(playerUnit);
                 unit->SetDestination({playerUnit->GetBody().x, playerUnit->GetBody().y});
