@@ -12,6 +12,19 @@ namespace Entity
         attackSpeed = 1;
         body = {100, 100, 50, 75};
         range = 25 + (body.width + body.height) / 2;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     Soldier::Soldier(float hp, float attack, float range, float speed, Rectangle body, Team team)
@@ -23,6 +36,19 @@ namespace Entity
         attackSpeed = 1;
         this->body = body;
         this->team = team;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     Soldier::Soldier(Vector2 position, Team team)
@@ -34,11 +60,23 @@ namespace Entity
         body = {position.x, position.y, 50, 75};
         range = 25 + (body.width + body.height) / 2;
         this->team = team;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     Soldier::~Soldier()
-    {
-    }
+    = default;
 
     void Soldier::Attack()
     {

@@ -39,6 +39,7 @@ namespace Entity
         bool alive;
 
         Team team;
+        Color color;
 
         Unit* target;
 

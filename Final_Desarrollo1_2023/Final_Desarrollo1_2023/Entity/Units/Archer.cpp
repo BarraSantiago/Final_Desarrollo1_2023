@@ -2,66 +2,110 @@
 
 #include "../CheckRange.h"
 #include "../Objects/Projectile.h"
-std::vector<Objects::Projectile*> Archer::projectiles;
 
-Archer::Archer(Entity::Team team)
+namespace Entity
 {
-    hp = 100;
-    attack = 20;
-    speed = 35;
-    range = 150 + (body.width + body.height) / 2;
-    attackSpeed = 1;
-    body = {100, 100, 40, 80};
-    proyectileSpeed = speed * 2;
-    this->team = team;
-}
+    std::vector<Objects::Projectile*> Archer::projectiles;
 
-Archer::Archer(float hp, float attack, float range, float attackSpeed, float speed, const Rectangle& body,
-               Entity::Team team, float proyectileSpeed)
-{
-    this->hp = hp;
-    this->attack = attack;
-    this->range = range;
-    this->speed = speed;
-    this->attackSpeed = attackSpeed;
-    this->body = body;
-    this->team = team;
-    this->proyectileSpeed = proyectileSpeed;
-}
-
-Archer::Archer(Vector2 position, Entity::Team team)
-{
-    hp = 100;
-    attack = 20;
-    speed = 35;
-    attackSpeed = 1;
-    proyectileSpeed = speed * 2;
-    body = {position.x, position.y, 40, 80};
-    range = 150 + (body.width + body.height) / 2;
-    this->team = team;
-}
-
-Archer::~Archer()
-= default;
-
-void Archer::Attack()
-{
-    //if attack is in cooldown, no extra calculation is made
-    if (attackCooldown > 0)
+    Archer::Archer(Team team)
     {
-        attackCooldown -= attackSpeed * GetFrameTime();
-        return;
+        hp = 100;
+        attack = 20;
+        speed = 35;
+        range = 150 + (body.width + body.height) / 2;
+        attackSpeed = 1;
+        body = {100, 100, 40, 80};
+        proyectileSpeed = speed * 2;
+
+        this->team = team;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
-    if (target == nullptr) return;
-    if (Check::InRange(body, target->GetBody(), range)) return;
-    if (Check::SameTeam(team, target->GetTeam())) return;
 
-    projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, team));
+    Archer::Archer(float hp, float attack, float range, float attackSpeed, float speed, const Rectangle& body,
+                   Team team, float proyectileSpeed)
+    {
+        this->hp = hp;
+        this->attack = attack;
+        this->range = range;
+        this->speed = speed;
+        this->attackSpeed = attackSpeed;
+        this->body = body;
+        this->team = team;
+        this->proyectileSpeed = proyectileSpeed;
 
-    attackCooldown = attackSpeed;
-}
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
+    }
 
-std::vector<Objects::Projectile*> Archer::GetProjectiles()
-{
-    return projectiles;
+    Archer::Archer(Vector2 position, Team team)
+    {
+        hp = 100;
+        attack = 20;
+        speed = 35;
+        attackSpeed = 1;
+        proyectileSpeed = speed * 2;
+        body = {position.x, position.y, 40, 80};
+        range = 150 + (body.width + body.height) / 2;
+        this->team = team;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
+    }
+
+    Archer::~Archer()
+    = default;
+
+    void Archer::Attack()
+    {
+        //if attack is in cooldown, no extra calculation is made
+        if (attackCooldown > 0)
+        {
+            attackCooldown -= attackSpeed * GetFrameTime();
+            return;
+        }
+        if (target == nullptr) return;
+        if (Check::InRange(body, target->GetBody(), range)) return;
+        if (Check::SameTeam(team, target->GetTeam())) return;
+
+        projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, team));
+
+        attackCooldown = attackSpeed;
+    }
+
+    std::vector<Objects::Projectile*> Archer::GetProjectiles()
+    {
+        return projectiles;
+    }
 }

@@ -25,5 +25,7 @@ private:
     void SpawnManager(char input);
     void MouseManager();
     void UnitsManager();
+    void SelectUnit(Entity::Unit* unit) const;
+    void DeselectUnits();
     void RemoveDeadUnits();
 };

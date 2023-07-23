@@ -13,10 +13,25 @@ namespace Entity
                   target(nullptr), destination({200, 200})
     {
         body = {200, 200, 100, 100};
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
-    bool Vector2IsEqual(const Vector2& vec1, const Vector2& vec2, float tolerance = 0.01f) {
+
+    bool Vector2IsEqual(const Vector2& vec1, const Vector2& vec2, float tolerance = 0.01f)
+    {
         return (std::fabs(vec1.x - vec2.x) <= tolerance) && (std::fabs(vec1.y - vec2.y) <= tolerance);
     }
+
     void Unit::Move()
     {
         Vector2 position = {body.x, body.y};
@@ -60,20 +75,14 @@ namespace Entity
 
     void Unit::DrawBody()
     {
-        Color color = GRAY;
-        switch (team)
-        {
-        case player:
-            color = BLUE;
-            break;
-        case enemy:
-            color = RED;
-            break;
-        case neutral:
-            color = RAYWHITE;
-            break;
-        }
+        const float lineWidth = ((body.width + body.height) / 2) / 10;
+
         DrawRectangleRec(body, color);
+
+        if (selected)
+        {
+            DrawRectangleLinesEx(body, lineWidth, YELLOW);
+        }
     }
 
     float Unit::GetRange() const

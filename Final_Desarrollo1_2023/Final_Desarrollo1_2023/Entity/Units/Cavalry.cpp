@@ -22,6 +22,19 @@ namespace Entity
         body = {100, 100, 75, 50};
 
         destination = {0, 0};
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     Cavalry::Cavalry(Vector2 position, Team team): destinationAux()
@@ -37,6 +50,19 @@ namespace Entity
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
         this->team = team;
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team):
@@ -52,6 +78,19 @@ namespace Entity
         this->team = team;
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
+
+        switch (team)
+        {
+        case player:
+            color = BLUE;
+            break;
+        case enemy:
+            color = RED;
+            break;
+        case neutral:
+            color = RAYWHITE;
+            break;
+        }
     }
 
     void Cavalry::Attack()

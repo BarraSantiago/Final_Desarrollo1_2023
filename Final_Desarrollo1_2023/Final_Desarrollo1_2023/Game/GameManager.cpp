@@ -40,11 +40,10 @@ void GameManager::Update()
     MouseManager();
 
     UnitsManager();
-    if (IsKeyPressed(KEY_Q))SpawnManager(GetCharPressed());
-    RemoveDeadUnits();
-
-
+    if (!actionPerformed)SpawnManager(GetCharPressed());
     enemyController->Update();
+    
+    RemoveDeadUnits();
 }
 
 void GameManager::Draw()
@@ -65,6 +64,7 @@ void GameManager::Draw()
 
 void GameManager::SpawnManager(char input)
 {
+    //TODO REMOVE MAGIC LETTERS
     switch (input)
     {
     case 'q':
@@ -89,33 +89,32 @@ void GameManager::SpawnManager(char input)
 
 void GameManager::MouseManager()
 {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    const int mainMouseButton = MOUSE_BUTTON_LEFT;
+    if (IsMouseButtonPressed(mainMouseButton))
     {
         boxStart = GetMousePosition();
+        DeselectUnits();
     }
 
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonDown(mainMouseButton))
     {
         boxEnd = GetMousePosition();
+        mouseSelection.x = fmin(boxStart.x, boxEnd.x);
+        mouseSelection.y = fmin(boxStart.y, boxEnd.y);
+        mouseSelection.width = fabs(boxEnd.x - boxStart.x);
+        mouseSelection.height = fabs(boxEnd.y - boxStart.y);
     }
-
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+    else
     {
-        boxEnd = GetMousePosition();
+        mouseSelection = {0,0,0,0};
     }
-
-    mouseSelection.x = fmin(boxStart.x, boxEnd.x);
-    mouseSelection.y = fmin(boxStart.y, boxEnd.y);
-    mouseSelection.width = fabs(boxEnd.x - boxStart.x);
-    mouseSelection.height = fabs(boxEnd.y - boxStart.y);
 }
 
 void GameManager::UnitsManager()
 {
     for (Unit* unit : units)
     {
-        unit->SetSelected(CheckCollisionRecs(unit->GetBody(), mouseSelection));
-
+        SelectUnit(unit);
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
             Vector2 mouseTarget = GetMousePosition();
@@ -123,7 +122,9 @@ void GameManager::UnitsManager()
             {
                 unit->SetDestination(mouseTarget);
                 if (!enemyController->GetEnemies().empty())
+                {
                     unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
+                }
             }
         }
         unit->Move();
@@ -134,6 +135,24 @@ void GameManager::UnitsManager()
         projectile->Move();
     }
 }
+
+
+void GameManager::SelectUnit(Unit* unit) const
+{
+    if (CheckCollisionRecs(unit->GetBody(), mouseSelection))
+    {
+        unit->SetSelected(true);
+    }
+}
+
+void GameManager::DeselectUnits()
+{
+    for (Unit* unit : units)
+    {
+        if(unit->IsSelected()) unit->SetSelected(false);
+    }
+}
+
 
 void GameManager::RemoveDeadUnits()
 {
