@@ -128,9 +128,9 @@ void GameManager::UnitsManager()
             {
                 unit->SetDestination(mouseTarget);
 
-                for (Unit* enemies : units)
+                for (Unit* enemyUnit : units)
                 {
-                    if (enemies->GetTeam() == enemy)
+                    if (enemyUnit->GetTeam() == enemy)
                     {
                         unit->SetTarget(targeting::GetTarget(mouseTarget, enemy));
                         break;

@@ -18,7 +18,8 @@ namespace Entity
         attackSpeed = 1;
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
-
+        attackCooldown = 0;
+        
         body = {100, 100, 75, 50};
 
         destination = {0, 0};
@@ -37,7 +38,7 @@ namespace Entity
         }
     }
 
-    Cavalry::Cavalry(Vector2 position, Team team): destinationAux()
+    Cavalry::Cavalry(Vector2 position, Team team): inAttack(false), destinationAux()
     {
         hp = 75;
         attack = 35;
@@ -49,6 +50,8 @@ namespace Entity
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
+        attackCooldown = 0;
+        
         this->team = team;
 
         switch (team)
@@ -65,7 +68,7 @@ namespace Entity
         }
     }
 
-    Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team):
+    Cavalry::Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team): inAttack(false),
         specialSpeed(speed * 4), destinationAux()
     {
         this->hp = hp;
@@ -78,6 +81,7 @@ namespace Entity
         this->team = team;
         attackFrames = attackSpeed / 2;
         destination = {0, 0};
+        attackCooldown = 0;
 
         switch (team)
         {
@@ -95,7 +99,7 @@ namespace Entity
 
     void Cavalry::Attack()
     {
-        if(target == nullptr) return;
+        if (target == nullptr) return;
 
         if (attackCooldown > 0)
         {
@@ -104,13 +108,13 @@ namespace Entity
             return;
         }
 
+        //if attack is in cooldown, no extra calculation is made
         if (attackFrames <= 0 && inAttack)
         {
             inAttack = false;
             speed = speedAux;
             destination = destinationAux;
         }
-        //if attack is in cooldown, no extra calculation is made
 
         if (Check::InRange(body, target->GetBody(), range)) return;
         if (Check::SameTeam(team, target->GetTeam())) return;
@@ -133,8 +137,14 @@ namespace Entity
 
     void Cavalry::SetDestination(Vector2 newDestination)
     {
-        if (attackCooldown > 0) return;
-        Unit::SetDestination(newDestination);
+        if (attackCooldown > 0)
+        {
+            destinationAux = newDestination;
+        }
+        else
+        {
+            Unit::SetDestination(newDestination);
+        }
     }
 
     void Cavalry::SetDestinationToTarget()
