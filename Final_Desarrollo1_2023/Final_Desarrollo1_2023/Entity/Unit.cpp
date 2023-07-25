@@ -35,6 +35,7 @@ namespace Entity
     void Unit::Move()
     {
         Vector2 position = {body.x, body.y};
+        
         if (!Vector2IsEqual(position, newDestination))
         {
             float distance = speed * GetFrameTime();
@@ -88,6 +89,11 @@ namespace Entity
     float Unit::GetRange() const
     {
         return range;
+    }
+
+    Vector2 Unit::GetDestination() const
+    {
+        return destination;
     }
 
     bool Unit::IsSelected()

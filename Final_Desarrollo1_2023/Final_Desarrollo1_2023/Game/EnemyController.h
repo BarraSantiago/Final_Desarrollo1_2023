@@ -8,20 +8,19 @@ namespace AIManager
     class EnemyController
     {
     public:
-        EnemyController(std::vector<Entity::Unit*> playerUnits);
+        EnemyController();
         ~EnemyController();
         void Update();
         void Draw();
-        std::vector<Entity::Unit*> GetEnemies();
 
         void SpawnArcher(Vector2 position);
         void SpawnCavalry(Vector2 position);
         void SpawnSoldier(Vector2 position);
 
     private:
-        void UnitTargeting(Entity::Unit* unit);
+        void UnitTargeting(Entity::Unit* Units);
+        bool AreAnyUnitsAlive(Entity::Team team);
         
-        std::vector<Entity::Unit*> enemyUnits;
-        std::vector<Entity::Unit*> playerUnits;
+        float chaseRangeMultiplier = 8.0f;
     };
 }

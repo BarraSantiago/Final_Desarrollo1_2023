@@ -6,5 +6,5 @@
 
 namespace targeting
 {
-    Entity::Unit* GetTarget(Vector2 position, std::vector<Entity::Unit*> possibleTargets);
+    Entity::Unit* GetTarget(Vector2 position, Entity::Team teamTargeted);
 }

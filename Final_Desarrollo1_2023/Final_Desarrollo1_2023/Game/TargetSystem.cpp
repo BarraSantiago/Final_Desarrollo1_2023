@@ -3,16 +3,29 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include "GameManager.h"
 #include "../Entity/Unit.h"
 using namespace Entity;
 
 namespace targeting
 {
-    Unit* GetTarget(Vector2 position, std::vector<Unit*> possibleTargets)
+    Unit* GetTarget(Vector2 position, Team teamTargeted)
     {
-        Unit* newTarget = possibleTargets[0];
-        for (Unit* target : possibleTargets)
+        Unit* newTarget = GameManager::units[0];
+
+        for (Unit* unit : GameManager::units)
         {
+            if (unit->GetTeam() == teamTargeted)
+            {
+                newTarget = unit;
+                break;
+            }
+        }
+        
+        for (Unit* target : GameManager::units)
+        {
+            if (target->GetTeam() != teamTargeted) continue;
+            
             Vector2 targetPos = {newTarget->GetBody().x, newTarget->GetBody().y};
             Vector2 playerPos = {target->GetBody().x, target->GetBody().y};
 

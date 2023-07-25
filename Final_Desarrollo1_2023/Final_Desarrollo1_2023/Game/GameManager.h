@@ -13,13 +13,15 @@ public:
     void GameController();
     void Update();
     void Draw();
+
+    static std::vector<Entity::Unit*> units;
+
 private:
     
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
     AIManager::EnemyController* enemyController;
-    std::vector<Entity::Unit*> units;
     bool actionPerformed;
     
     void SpawnManager(char input);

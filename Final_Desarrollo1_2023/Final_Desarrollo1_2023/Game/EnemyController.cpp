@@ -2,11 +2,14 @@
 
 #include <raymath.h>
 
+#include "GameManager.h"
 #include "../Entity/Units/Archer.h"
 #include "../Entity/Units/Cavalry.h"
 #include "../Entity/Units/Soldier.h"
 
 using namespace Entity;
+
+std::vector<Unit*> GameManager::units;
 
 namespace AIManager
 {
@@ -17,86 +20,102 @@ namespace AIManager
         return Vector2Distance(unit1Pos, unit2Pos) < distance;
     }
 
-    EnemyController::EnemyController(std::vector<Unit*> playerUnits)
+    bool CheckDistance(Unit* unit, Vector2 destination, float distance)
     {
-        this->playerUnits = playerUnits;
-        enemyUnits.push_back(new Soldier{{500, 500}, enemy});
-        for (Unit* enemy : enemyUnits)
-        {
-            enemy->SetTarget(playerUnits[0]);
-        }
+        Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
+
+        return Vector2Distance(unit1Pos, destination) < distance;
+    }
+
+    EnemyController::EnemyController()
+    {
+        GameManager::units.push_back(new Soldier{{500, 500}, enemy});
     }
 
     EnemyController::~EnemyController()
-    {
-    }
+    = default;
 
     void EnemyController::Update()
     {
-        for (Unit* unit : enemyUnits)
+        for (Unit* unit : GameManager::units)
         {
-            UnitTargeting(unit);
-            
-            if (CheckDistance(unit, unit->GetTarget(), unit->GetRange()*5))
-                unit->Move();
+            if (unit->GetTeam() != enemy || !unit->IsAlive()) continue;
+
+            if (AreAnyUnitsAlive(player))
+            {
+                UnitTargeting(unit);
+            }
+
+            unit->Move();
+
             unit->Attack();
         }
-        enemyUnits.erase(std::remove_if(enemyUnits.begin(), enemyUnits.end(), [](Unit* elem)
-        {
-            return !elem->IsAlive();
-        }), enemyUnits.end());
     }
 
 
     void EnemyController::Draw()
     {
-        for (Unit* unit : enemyUnits)
+        for (Unit* unit : GameManager::units)
         {
             unit->DrawBody();
             unit->DrawHP();
         }
     }
 
-    std::vector<Unit*> EnemyController::GetEnemies()
-    {
-        return enemyUnits;
-    }
-
     void EnemyController::SpawnArcher(Vector2 position)
     {
-        enemyUnits.push_back(new Archer{position, enemy});
+        GameManager::units.push_back(new Archer{position, enemy});
     }
 
     void EnemyController::SpawnCavalry(Vector2 position)
     {
-        enemyUnits.push_back(new Cavalry{position, enemy});
+        GameManager::units.push_back(new Cavalry{position, enemy});
     }
 
     void EnemyController::SpawnSoldier(Vector2 position)
     {
-        enemyUnits.push_back(new Soldier{position, enemy});
+        GameManager::units.push_back(new Soldier{position, enemy});
     }
 
     void EnemyController::UnitTargeting(Unit* unit)
     {
         Vector2 enemyPos = {unit->GetBody().x, unit->GetBody().y};
-        
-        unit->SetDestination({playerUnits[0]->GetBody().x, playerUnits[0]->GetBody().y});
+        Unit* nearestPlayerUnit = nullptr;
+        float nearestDistance = std::numeric_limits<float>::max();
 
-        for (Unit* playerUnit : playerUnits)
+        for (Unit* playerUnit : GameManager::units)
         {
-            Vector2 targetPos = {playerUnit->GetTarget()->GetBody().x, playerUnit->GetTarget()->GetBody().y};
+            if (!playerUnit || !playerUnit->IsAlive() || playerUnit->GetTeam() != player) continue;
 
-            if (!playerUnit->IsAlive()) continue;
+            Vector2 targetPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
 
-            //Checks for the nearest target, compares the distance between the current target with the new target
-            float distanceBetweenTargets = Vector2Distance(targetPos, enemyPos);
+            // Calculate the distance between the current unit and the playerUnit
+            float distanceToPlayerUnit = Vector2Distance(targetPos, enemyPos);
 
-            if (CheckDistance(unit, playerUnit, distanceBetweenTargets))
+            // Compare the distance with the nearest found so far
+            if (distanceToPlayerUnit < nearestDistance)
             {
-                unit->SetTarget(playerUnit);
-                unit->SetDestination({playerUnit->GetBody().x, playerUnit->GetBody().y});
+                nearestDistance = distanceToPlayerUnit;
+                nearestPlayerUnit = playerUnit;
             }
         }
+
+        // Set the nearest playerUnit as the target and destination for the unit
+        if (nearestPlayerUnit)
+        {
+            unit->SetTarget(nearestPlayerUnit);
+            unit->SetDestination({nearestPlayerUnit->GetBody().x, nearestPlayerUnit->GetBody().y});
+        }
+    }
+
+
+    bool EnemyController::AreAnyUnitsAlive(Team team)
+    {
+        for (Unit* unit : GameManager::units)
+        {
+            if (unit->GetTeam() != team) continue;
+            if (unit->IsAlive()) return true;
+        }
+        return false;
     }
 }

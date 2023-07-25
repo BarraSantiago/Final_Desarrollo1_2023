@@ -23,6 +23,7 @@ namespace Entity
         Rectangle GetBody() override;
         void DrawBody() override;
         float GetRange() const;
+        Vector2 GetDestination() const;
         
     protected:
         float hp;

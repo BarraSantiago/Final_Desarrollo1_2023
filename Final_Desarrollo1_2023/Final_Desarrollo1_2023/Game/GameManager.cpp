@@ -13,17 +13,19 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerfor
 {
     units.push_back(new Cavalry({50, 300}, player));
 
-    enemyController = new AIManager::EnemyController{units};
-    for (Unit* unit : units)
-    {
-        unit->SetTarget(enemyController->GetEnemies()[0]);
-    }
+    enemyController = new AIManager::EnemyController;
 
     enemyController->SpawnCavalry({111, 111});
 }
 
 GameManager::~GameManager()
-= default;
+{
+    delete enemyController;
+    for (Unit* unit : units)
+    {
+        delete unit;
+    }
+}
 
 void GameManager::GameController()
 {
@@ -42,7 +44,7 @@ void GameManager::Update()
     UnitsManager();
     if (!actionPerformed)SpawnManager(GetCharPressed());
     enemyController->Update();
-    
+
     RemoveDeadUnits();
 }
 
@@ -106,7 +108,7 @@ void GameManager::MouseManager()
     }
     else
     {
-        mouseSelection = {0,0,0,0};
+        mouseSelection = {0, 0, 0, 0};
     }
 }
 
@@ -114,16 +116,25 @@ void GameManager::UnitsManager()
 {
     for (Unit* unit : units)
     {
+        if (unit->GetTeam() != player) continue;
+
         SelectUnit(unit);
+
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
             Vector2 mouseTarget = GetMousePosition();
+
             if (unit->IsSelected())
             {
                 unit->SetDestination(mouseTarget);
-                if (!enemyController->GetEnemies().empty())
+
+                for (Unit* enemies : units)
                 {
-                    unit->SetTarget(targeting::GetTarget(mouseTarget, enemyController->GetEnemies()));
+                    if (enemies->GetTeam() == enemy)
+                    {
+                        unit->SetTarget(targeting::GetTarget(mouseTarget, enemy));
+                        break;
+                    }
                 }
             }
         }
@@ -149,7 +160,7 @@ void GameManager::DeselectUnits()
 {
     for (Unit* unit : units)
     {
-        if(unit->IsSelected()) unit->SetSelected(false);
+        if (unit->IsSelected()) unit->SetSelected(false);
     }
 }
 
