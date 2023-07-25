@@ -6,7 +6,7 @@ int main()
     InitWindow(1080, 720, "se");
     
     GameManager* game_manager = new GameManager;
-    game_manager->GameController();
+    game_manager->GameFlow();
     delete game_manager;
     CloseWindow();
 }

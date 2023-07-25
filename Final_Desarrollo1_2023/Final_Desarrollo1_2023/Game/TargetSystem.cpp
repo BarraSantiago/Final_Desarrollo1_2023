@@ -9,22 +9,13 @@ using namespace Entity;
 
 namespace targeting
 {
-    Unit* GetTarget(Vector2 position, Team teamTargeted)
+    Unit* GetTarget(Vector2 position, std::vector<Unit*> units)
     {
-        Unit* newTarget = GameManager::units[0];
-
-        for (Unit* unit : GameManager::units)
-        {
-            if (unit->GetTeam() == teamTargeted)
-            {
-                newTarget = unit;
-                break;
-            }
-        }
+        Unit* newTarget = units[0];
         
-        for (Unit* target : GameManager::units)
+        for (Unit* target : units)
         {
-            if (target->GetTeam() != teamTargeted) continue;
+            if(!target->IsAlive()) continue;
             
             Vector2 targetPos = {newTarget->GetBody().x, newTarget->GetBody().y};
             Vector2 playerPos = {target->GetBody().x, target->GetBody().y};

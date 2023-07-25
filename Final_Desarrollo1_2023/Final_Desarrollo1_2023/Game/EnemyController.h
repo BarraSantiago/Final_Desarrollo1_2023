@@ -19,7 +19,7 @@ namespace AIManager
 
     private:
         void UnitTargeting(Entity::Unit* Units);
-        bool AreAnyUnitsAlive(Entity::Team team);
+        bool AreAnyUnitsAlive(std::vector<Entity::Unit*> units);
         
         float chaseRangeMultiplier = 8.0f;
     };

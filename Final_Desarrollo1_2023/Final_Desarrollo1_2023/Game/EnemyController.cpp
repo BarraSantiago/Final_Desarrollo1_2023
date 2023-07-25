@@ -9,7 +9,6 @@
 
 using namespace Entity;
 
-std::vector<Unit*> GameManager::units;
 
 namespace AIManager
 {
@@ -29,7 +28,7 @@ namespace AIManager
 
     EnemyController::EnemyController()
     {
-        GameManager::units.push_back(new Soldier{{500, 500}, enemy});
+        GameManager::enemyUnits.push_back(new Soldier{{500, 500}, enemy});
     }
 
     EnemyController::~EnemyController()
@@ -37,11 +36,11 @@ namespace AIManager
 
     void EnemyController::Update()
     {
-        for (Unit* unit : GameManager::units)
+        for (Unit* unit : GameManager::enemyUnits)
         {
-            if (unit->GetTeam() != enemy || !unit->IsAlive()) continue;
+            if (!unit || !unit->IsAlive()) continue;
 
-            if (AreAnyUnitsAlive(player))
+            if (AreAnyUnitsAlive(GameManager::playerUnits))
             {
                 UnitTargeting(unit);
             }
@@ -55,8 +54,10 @@ namespace AIManager
 
     void EnemyController::Draw()
     {
-        for (Unit* unit : GameManager::units)
+        for (Unit* unit : GameManager::enemyUnits)
         {
+            if (!unit->IsAlive()) continue;
+
             unit->DrawBody();
             unit->DrawHP();
         }
@@ -64,17 +65,17 @@ namespace AIManager
 
     void EnemyController::SpawnArcher(Vector2 position)
     {
-        GameManager::units.push_back(new Archer{position, enemy});
+        GameManager::enemyUnits.push_back(new Archer{position, enemy});
     }
 
     void EnemyController::SpawnCavalry(Vector2 position)
     {
-        GameManager::units.push_back(new Cavalry{position, enemy});
+        GameManager::enemyUnits.push_back(new Cavalry{position, enemy});
     }
 
     void EnemyController::SpawnSoldier(Vector2 position)
     {
-        GameManager::units.push_back(new Soldier{position, enemy});
+        GameManager::enemyUnits.push_back(new Soldier{position, enemy});
     }
 
     void EnemyController::UnitTargeting(Unit* unit)
@@ -83,9 +84,9 @@ namespace AIManager
         Unit* nearestPlayerUnit = nullptr;
         float nearestDistance = std::numeric_limits<float>::max();
 
-        for (Unit* playerUnit : GameManager::units)
+        for (Unit* playerUnit : GameManager::playerUnits)
         {
-            if (!playerUnit || !playerUnit->IsAlive() || playerUnit->GetTeam() != player) continue;
+            if (!playerUnit || !playerUnit->IsAlive()) continue;
 
             Vector2 targetPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
 
@@ -109,11 +110,10 @@ namespace AIManager
     }
 
 
-    bool EnemyController::AreAnyUnitsAlive(Team team)
+    bool EnemyController::AreAnyUnitsAlive(std::vector<Unit*> units)
     {
-        for (Unit* unit : GameManager::units)
+        for (Unit* unit : units)
         {
-            if (unit->GetTeam() != team) continue;
             if (unit->IsAlive()) return true;
         }
         return false;

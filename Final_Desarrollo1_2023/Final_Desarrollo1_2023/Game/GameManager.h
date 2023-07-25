@@ -10,11 +10,12 @@ class GameManager
 public:
     GameManager();
     ~GameManager();
-    void GameController();
+    void GameFlow();
     void Update();
     void Draw();
 
-    static std::vector<Entity::Unit*> units;
+    static std::vector<Entity::Unit*> playerUnits;
+    static std::vector<Entity::Unit*> enemyUnits;
 
 private:
     
@@ -29,5 +30,5 @@ private:
     void UnitsManager();
     void SelectUnit(Entity::Unit* unit) const;
     void DeselectUnits();
-    void RemoveDeadUnits();
+    void RemoveDeadUnits(std::vector<Entity::Unit*>& units);
 };

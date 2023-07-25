@@ -9,9 +9,12 @@
 
 using namespace Entity;
 
+std::vector<Unit*> GameManager::playerUnits;
+std::vector<Unit*> GameManager::enemyUnits;
+
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerformed(false)
 {
-    units.push_back(new Cavalry({50, 300}, player));
+    playerUnits.push_back(new Cavalry({50, 300}, player));
 
     enemyController = new AIManager::EnemyController;
 
@@ -21,13 +24,17 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerfor
 GameManager::~GameManager()
 {
     delete enemyController;
-    for (Unit* unit : units)
+    for (Unit* unit : playerUnits)
+    {
+        delete unit;
+    }
+    for (Unit* unit : enemyUnits)
     {
         delete unit;
     }
 }
 
-void GameManager::GameController()
+void GameManager::GameFlow()
 {
     while (!WindowShouldClose())
     {
@@ -45,7 +52,8 @@ void GameManager::Update()
     if (!actionPerformed)SpawnManager(GetCharPressed());
     enemyController->Update();
 
-    RemoveDeadUnits();
+    RemoveDeadUnits(playerUnits);
+    RemoveDeadUnits(enemyUnits);
 }
 
 void GameManager::Draw()
@@ -54,7 +62,7 @@ void GameManager::Draw()
     ClearBackground(BLACK);
 
     enemyController->Draw();
-    for (Unit* unit : units)
+    for (Unit* unit : playerUnits)
     {
         unit->DrawBody();
         unit->DrawHP();
@@ -71,17 +79,17 @@ void GameManager::SpawnManager(char input)
     {
     case 'q':
     case 'Q':
-        units.push_back(new Soldier{GetMousePosition(), player});
+        playerUnits.push_back(new Soldier{GetMousePosition(), player});
         actionPerformed = true;
         break;
     case 'w':
     case 'W':
-        units.push_back(new Cavalry{GetMousePosition(), player});
+        playerUnits.push_back(new Cavalry{GetMousePosition(), player});
         actionPerformed = true;
         break;
     case 'e':
     case 'E':
-        units.push_back(new Archer{GetMousePosition(), player});
+        playerUnits.push_back(new Archer{GetMousePosition(), player});
         actionPerformed = true;
         break;
     default:
@@ -114,33 +122,26 @@ void GameManager::MouseManager()
 
 void GameManager::UnitsManager()
 {
-    for (Unit* unit : units)
+    for (Unit* unit : playerUnits)
     {
-        if (unit->GetTeam() != player) continue;
-
         SelectUnit(unit);
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
             Vector2 mouseTarget = GetMousePosition();
 
-            if (unit->IsSelected())
-            {
-                unit->SetDestination(mouseTarget);
 
-                for (Unit* enemyUnit : units)
-                {
-                    if (enemyUnit->GetTeam() == enemy)
-                    {
-                        unit->SetTarget(targeting::GetTarget(mouseTarget, enemy));
-                        break;
-                    }
-                }
+            unit->SetDestination(mouseTarget);
+
+            if(!enemyUnits.empty())
+            {
+                unit->SetTarget(targeting::GetTarget(mouseTarget, enemyUnits));
             }
         }
         unit->Move();
         unit->Attack();
     }
+    
     for (Objects::Projectile* projectile : Archer::GetProjectiles())
     {
         projectile->Move();
@@ -158,17 +159,17 @@ void GameManager::SelectUnit(Unit* unit) const
 
 void GameManager::DeselectUnits()
 {
-    for (Unit* unit : units)
+    for (Unit* unit : playerUnits)
     {
         if (unit->IsSelected()) unit->SetSelected(false);
     }
 }
 
 
-void GameManager::RemoveDeadUnits()
+void GameManager::RemoveDeadUnits(std::vector<Unit*>& units)
 {
-    units.erase(std::remove_if(units.begin(), units.end(), [](Unit* elem)
-    {
-        return !elem->IsAlive();
-    }), units.end());
+    units.erase(std::remove_if(units.begin(), units.end(),
+        [](Unit* unit) {
+            return !unit->IsAlive(); 
+        }), units.end());
 }
