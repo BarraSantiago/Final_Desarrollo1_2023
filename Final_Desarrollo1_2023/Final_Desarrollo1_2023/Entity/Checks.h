@@ -4,5 +4,6 @@
 namespace Check
 {
     bool InRange(Rectangle body, Rectangle targetBody, float range);
-    bool SameTeam(Entity::Team team, Entity::Team targetTeam);
+    bool AABBCollision(Entity::DefaultEntity* a, Entity::DefaultEntity* b);
+
 }

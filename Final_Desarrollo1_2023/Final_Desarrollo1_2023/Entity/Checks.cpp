@@ -1,4 +1,4 @@
-﻿#include "CheckRange.h"
+﻿#include "Checks.h"
 
 #include <raylib.h>
 #include <raymath.h>
@@ -17,11 +17,5 @@ namespace Check
 
         //if target isn't in range, no calculation is made
         return Vector2Distance({unitX, unitY}, {targetX, targetY}) > range;
-    }
-
-    bool SameTeam(Entity::Team team, Entity::Team targetTeam)
-    {
-        //if target is the same team, there should be no attack (bug prevention)
-        return targetTeam == team;
     }
 }
