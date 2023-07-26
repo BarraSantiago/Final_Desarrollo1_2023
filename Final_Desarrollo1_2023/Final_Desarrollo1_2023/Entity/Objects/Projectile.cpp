@@ -2,8 +2,6 @@
 
 #include <raymath.h>
 
-#include "rlgl.h"
-#include "raymath.h"
 #include "cmath"
 #include "../Unit.h"
 #include "../../Game/Collisions.h"
@@ -59,10 +57,7 @@ namespace Objects
         body.y = origin.y;
         body.width = 50;
         body.height = 25;
-
-        rlTranslatef(body.x, body.y, 0);
-        rlRotatef(30,0,0, -1);
-
+        
         color = GRAY;
         switch (team)
         {

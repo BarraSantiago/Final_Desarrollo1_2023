@@ -135,6 +135,8 @@ void GameManager::UnitsManager()
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
+            if(!unit->IsSelected()) continue;
+            
             Vector2 mouseTarget = GetMousePosition();
 
             unit->SetDestination(mouseTarget);
