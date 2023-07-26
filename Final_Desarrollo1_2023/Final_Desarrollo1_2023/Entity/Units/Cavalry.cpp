@@ -2,7 +2,7 @@
 
 #include <raymath.h>
 
-#include "../CheckRange.h"
+#include "..\Checks.h"
 
 namespace Entity
 {
@@ -11,6 +11,7 @@ namespace Entity
     Cavalry::Cavalry(): inAttack(false), destinationAux()
     {
         hp = 75;
+        currentHP = hp;
         attack = 35;
         speed = 50;
         specialSpeed = speed * 4;
@@ -22,7 +23,7 @@ namespace Entity
         
         body = {100, 100, 75, 50};
 
-        destination = {0, 0};
+        direction = {0, 0};
 
         switch (team)
         {
@@ -41,6 +42,7 @@ namespace Entity
     Cavalry::Cavalry(Vector2 position, Team team): inAttack(false), destinationAux()
     {
         hp = 75;
+        currentHP = hp;
         attack = 35;
         speed = 50;
         specialSpeed = speed * 4;
@@ -49,7 +51,7 @@ namespace Entity
         body = {position.x, position.y, 70, 50};
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
-        destination = {0, 0};
+        direction = {0, 0};
         attackCooldown = 0;
         
         this->team = team;
@@ -72,6 +74,7 @@ namespace Entity
         specialSpeed(speed * 4), destinationAux()
     {
         this->hp = hp;
+        currentHP = hp;
         this->attack = attack;
         this->range = range;
         this->speed = speed;
@@ -80,7 +83,7 @@ namespace Entity
         this->body = body;
         this->team = team;
         attackFrames = attackSpeed / 2;
-        destination = {0, 0};
+        direction = {0, 0};
         attackCooldown = 0;
 
         switch (team)
@@ -113,11 +116,11 @@ namespace Entity
         {
             inAttack = false;
             speed = speedAux;
-            destination = destinationAux;
+            direction = destinationAux;
         }
 
         if (Check::InRange(body, target->GetBody(), range)) return;
-        if (Check::SameTeam(team, target->GetTeam())) return;
+        if (team == target->GetTeam()) return;
 
 
         //Finishes special attack behaviour
@@ -130,7 +133,7 @@ namespace Entity
         target->ModifyHealth(-attack);
 
         attackCooldown = attackSpeed;
-        destinationAux = destination;
+        destinationAux = direction;
         attackFrames = attackSpeed / 2;
         inAttack = true;
     }
@@ -156,6 +159,6 @@ namespace Entity
         float targetY = target->GetBody().y + target->GetBody().height / 2;
 
         //sets direction to enemy unit
-        destination = Vector2Subtract({targetX, targetY}, {unitX, unitY});
+        direction = Vector2Subtract({targetX, targetY}, {unitX, unitY});
     }
 }
