@@ -1,10 +1,6 @@
 #pragma once
-#include "..\DefaultEntity.h"
-
-namespace Entity
-{
-    class Unit;
-}
+#include "../Unit.h"
+#include "../DefaultEntity.h"
 
 namespace Objects
 {
@@ -13,27 +9,29 @@ namespace Objects
     public:
         Projectile();
         Projectile(float speed, float damage, Rectangle body,Vector2 direction, Entity::Team team);
-        Projectile(Vector2 direction, Entity::Team team);
+        Projectile(Vector2 direction, Vector2 origin, Entity::Team team);
         ~Projectile() override;
         
         Rectangle GetBody() override;
 
         void Move();
-        void SetTarget(Entity::Unit* target);
+        void SetTarget(Entity::Unit* unit);
         void DrawBody() override;
         void Collide();
-        bool isAlive();
+        bool IsAlive() override;
 
     private:
         float speed;
         float damage;
 
-        bool hasTarget;
         bool alive;
 
         Vector2 direction{};
+        Vector2 destination{};
+
         Entity::Team team;
         Entity::Unit* target;
-        //float
+        
+        Color color{};
     };
 }

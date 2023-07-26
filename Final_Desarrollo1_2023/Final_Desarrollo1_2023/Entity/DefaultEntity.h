@@ -16,5 +16,6 @@ namespace Entity
         virtual Rectangle GetBody() = 0;
         virtual void DrawBody() = 0;
         Rectangle body{};
+        virtual bool IsAlive() = 0;
     };
 }
