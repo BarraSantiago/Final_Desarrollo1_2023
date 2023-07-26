@@ -8,9 +8,8 @@ namespace Entity
     Unit::~Unit()
     = default;
 
-    Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), attackSpeed(1), attackCooldown(1), speed(50),
-                  distanceX(0), distanceY(0), selected(false), alive(true), team(player),
-                  target(nullptr), destination({200, 200})
+    Unit::Unit(): hp(100), currentHP(100), attack(20), range(5), attackSpeed(1), attackCooldown(1), speed(50), selected(false), alive(true), team(player),
+                  target(nullptr), direction({200, 200})
     {
         body = {200, 200, 100, 100};
         switch (team)
@@ -36,22 +35,20 @@ namespace Entity
     {
         Vector2 position = {body.x, body.y};
         
-        if (!Vector2IsEqual(position, newDestination))
+        if (!Vector2IsEqual(position, destination))
         {
             float distance = speed * GetFrameTime();
-            Vector2 movementDelta = Vector2Scale(Vector2Normalize(destination), distance);
+            Vector2 movementDelta = Vector2Scale(Vector2Normalize(direction), distance);
             position = Vector2Add({body.x, body.y}, movementDelta);
             body.x = position.x;
             body.y = position.y;
         }
     }
 
-    void Unit::SetDestination(Vector2 newDestination)
+    void Unit::SetDestination(Vector2 newDirection)
     {
-        this->newDestination = newDestination;
-        destination = Vector2Subtract(newDestination, {body.x, body.y});
-        distanceX = Vector2Distance({body.x, 0}, newDestination);
-        distanceY = Vector2Distance({0, body.y}, newDestination);
+        this->destination = newDirection;
+        direction = Vector2Subtract(newDirection, {body.x, body.y});
     }
 
     void Unit::ModifyHealth(float hpModifier)
@@ -93,7 +90,7 @@ namespace Entity
 
     Vector2 Unit::GetDestination() const
     {
-        return destination;
+        return direction;
     }
 
     bool Unit::IsSelected()

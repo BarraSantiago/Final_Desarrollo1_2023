@@ -10,14 +10,14 @@ namespace Entity
         ~Unit() override;
         Unit();
         void Move();
-        virtual void SetDestination(Vector2 newDestination);
+        virtual void SetDestination(Vector2 newDirection);
         void ModifyHealth(float hpModifier);
         void DrawHP();
         virtual void Attack() = 0;
         bool IsSelected();
         Unit* GetTarget();
         Team GetTeam();
-        bool IsAlive();
+        bool IsAlive() override;
         void SetSelected(bool select);
         void SetTarget(Unit* target);
         Rectangle GetBody() override;
@@ -33,8 +33,6 @@ namespace Entity
         float attackSpeed;
         float attackCooldown;
         float speed;
-        float distanceX;
-        float distanceY;
 
         bool selected;
         bool alive;
@@ -44,8 +42,8 @@ namespace Entity
 
         Unit* target;
 
-        Vector2 newDestination{};
         Vector2 destination{};
+        Vector2 direction{};
 
     };
 }
