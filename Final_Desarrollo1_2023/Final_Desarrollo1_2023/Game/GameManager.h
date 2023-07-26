@@ -4,6 +4,7 @@
 
 #include "EnemyController.h"
 #include "../Entity/Unit.h"
+#include "../Entity/Objects/Projectile.h"
 
 class GameManager
 {
@@ -29,6 +30,7 @@ private:
     void MouseManager();
     void UnitsManager();
     void SelectUnit(Entity::Unit* unit) const;
-    void DeselectUnits();
-    void RemoveDeadUnits(std::vector<Entity::Unit*>& units);
+    static void DeselectUnits();
+    static void RemoveDeadUnits(std::vector<Entity::Unit*>& units);
+    static void RemoveDeadProjectiles(std::vector<Objects::Projectile*>& projectile);
 };

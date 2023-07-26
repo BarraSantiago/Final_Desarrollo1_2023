@@ -54,6 +54,7 @@ void GameManager::Update()
 
     RemoveDeadUnits(playerUnits);
     RemoveDeadUnits(enemyUnits);
+    RemoveDeadProjectiles(Archer::projectiles);
 }
 
 void GameManager::Draw()
@@ -62,10 +63,16 @@ void GameManager::Draw()
     ClearBackground(BLACK);
 
     enemyController->Draw();
+
     for (Unit* unit : playerUnits)
     {
         unit->DrawBody();
         unit->DrawHP();
+    }
+
+    for (Objects::Projectile* projectile : Archer::projectiles)
+    {
+        projectile->DrawBody();
     }
 
     DrawRectangleLinesEx(mouseSelection, 4, RED);
@@ -130,19 +137,19 @@ void GameManager::UnitsManager()
         {
             Vector2 mouseTarget = GetMousePosition();
 
-
             unit->SetDestination(mouseTarget);
 
-            if(!enemyUnits.empty())
+            if (!enemyUnits.empty())
             {
                 unit->SetTarget(targeting::GetTarget(mouseTarget, enemyUnits));
             }
         }
+
         unit->Move();
         unit->Attack();
     }
-    
-    for (Objects::Projectile* projectile : Archer::GetProjectiles())
+
+    for (Objects::Projectile* projectile : Archer::projectiles)
     {
         projectile->Move();
     }
@@ -169,7 +176,17 @@ void GameManager::DeselectUnits()
 void GameManager::RemoveDeadUnits(std::vector<Unit*>& units)
 {
     units.erase(std::remove_if(units.begin(), units.end(),
-        [](Unit* unit) {
-            return !unit->IsAlive(); 
-        }), units.end());
+                               [](Unit* unit)
+                               {
+                                   return !unit->IsAlive();
+                               }), units.end());
+}
+
+void GameManager::RemoveDeadProjectiles(std::vector<Objects::Projectile*>& projectile)
+{
+    projectile.erase(std::remove_if(projectile.begin(), projectile.end(),
+                                    [](Objects::Projectile* projectile)
+                                    {
+                                        return !projectile->IsAlive();
+                                    }), projectile.end());
 }
