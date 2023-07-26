@@ -1,6 +1,6 @@
 ﻿#include "Soldier.h"
 
-#include "../CheckRange.h"
+#include "..\Checks.h"
 
 namespace Entity
 {
@@ -87,7 +87,7 @@ namespace Entity
         }
         if(target == nullptr) return;
         if (Check::InRange(body, target->GetBody(), range)) return;
-        if (Check::SameTeam(team, target->GetTeam())) return;
+        if (team == target->GetTeam()) return;
         
         //if attack is in cooldown, no extra calculation is made
         

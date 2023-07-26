@@ -19,25 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity\CheckRange.cpp" />
+    <ClCompile Include="Entity\Checks.cpp" />
     <ClCompile Include="Entity\Objects\Projectile.cpp" />
     <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="Entity\Units\Archer.cpp" />
     <ClCompile Include="Entity\Units\Cavalry.cpp" />
     <ClCompile Include="Entity\Units\Soldier.cpp" />
+    <ClCompile Include="Game\Collisions.cpp" />
     <ClCompile Include="Game\EnemyController.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="Game\TargetSystem.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity\CheckRange.h" />
+    <ClInclude Include="Entity\Checks.h" />
     <ClInclude Include="Entity\DefaultEntity.h" />
     <ClInclude Include="Entity\Objects\Projectile.h" />
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="Entity\Units\Archer.h" />
     <ClInclude Include="Entity\Units\Cavalry.h" />
     <ClInclude Include="Entity\Units\Soldier.h" />
+    <ClInclude Include="Game\Collisions.h" />
     <ClInclude Include="Game\EnemyController.h" />
     <ClInclude Include="Game\GameManager.h" />
     <ClInclude Include="Game\TargetSystem.h" />

@@ -16,10 +16,9 @@ namespace Entity
         ~Archer() override;
 
         void Attack() override;
-        static std::vector<Objects::Projectile*> GetProjectiles();
+        static std::vector<Objects::Projectile*> projectiles;
 
     private:
         float proyectileSpeed;
-        static std::vector<Objects::Projectile*> projectiles;
     };
 }

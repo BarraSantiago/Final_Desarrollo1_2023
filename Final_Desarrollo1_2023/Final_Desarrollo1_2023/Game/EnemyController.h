@@ -21,6 +21,6 @@ namespace AIManager
         void UnitTargeting(Entity::Unit* Units);
         bool AreAnyUnitsAlive(std::vector<Entity::Unit*> units);
         
-        float chaseRangeMultiplier = 8.0f;
+        const float chaseRangeMultiplier = 8.0f;
     };
 }

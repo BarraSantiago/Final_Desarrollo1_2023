@@ -1,6 +1,6 @@
 #include "Archer.h"
 
-#include "../CheckRange.h"
+#include "..\Checks.h"
 #include "../Objects/Projectile.h"
 
 namespace Entity
@@ -95,17 +95,12 @@ namespace Entity
             attackCooldown -= attackSpeed * GetFrameTime();
             return;
         }
-        if (target == nullptr) return;
+        if (!target) return;
         if (Check::InRange(body, target->GetBody(), range)) return;
-        if (Check::SameTeam(team, target->GetTeam())) return;
+        if (team == target->GetTeam()) return;
 
-        projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, team));
+        projectiles.push_back(new Objects::Projectile({target->body.x, target->body.y}, {body.x, body.y}, team));
 
         attackCooldown = attackSpeed;
-    }
-
-    std::vector<Objects::Projectile*> Archer::GetProjectiles()
-    {
-        return projectiles;
     }
 }
