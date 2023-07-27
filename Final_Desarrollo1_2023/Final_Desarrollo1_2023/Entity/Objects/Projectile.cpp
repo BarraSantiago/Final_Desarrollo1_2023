@@ -48,16 +48,18 @@ namespace Objects
         }
     }
 
-    Projectile::Projectile(Vector2 direction, Vector2 origin, Entity::Team team): speed(35), damage(50), alive(true), target(nullptr)
+    Projectile::Projectile(Vector2 direction, Vector2 origin, Entity::Team team): speed(35), damage(30), alive(true),
+        target(nullptr)
     {
         this->destination = direction;
         this->direction = Vector2Normalize(Vector2Subtract(direction, {body.x, body.y}));
         this->team = team;
+        
         body.x = origin.x;
         body.y = origin.y;
         body.width = 50;
         body.height = 25;
-        
+
         color = GRAY;
         switch (team)
         {
@@ -75,24 +77,11 @@ namespace Objects
 
     Projectile::~Projectile()
     = default;
-
-    bool Vector2IsEqual(const Vector2& vec1, const Vector2& vec2, float tolerance = 0.01f)
-    {
-        return (std::fabs(vec1.x - vec2.x) <= tolerance) && (std::fabs(vec1.y - vec2.y) <= tolerance);
-    }
     
     void Projectile::Move()
     {
-        Vector2 position = {body.x, body.y};
-        
-        if (!Vector2IsEqual(position, destination))
-        {
-            float distance = speed * GetFrameTime();
-            Vector2 movementDelta = Vector2Scale(direction, distance);
-            position = Vector2Add({body.x, body.y}, movementDelta);
-            body.x = position.x;
-            body.y = position.y;
-        }
+        body.x += direction.x * speed * GetFrameTime();
+        body.y += direction.y * speed * GetFrameTime();
 
         if (team == Entity::player)
         {
