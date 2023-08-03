@@ -96,6 +96,7 @@ namespace Entity
             return;
         }
         if (!target) return;
+        if (!target->IsAlive()) return;
         if (Check::InRange(body, target->GetBody(), range)) return;
         if (team == target->GetTeam()) return;
 

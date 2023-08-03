@@ -52,7 +52,7 @@ namespace Objects
         target(nullptr)
     {
         this->destination = direction;
-        this->direction = Vector2Normalize(Vector2Subtract(direction, {body.x, body.y}));
+        this->direction = Vector2Normalize(Vector2Subtract(direction, origin));
         this->team = team;
         
         body.x = origin.x;
