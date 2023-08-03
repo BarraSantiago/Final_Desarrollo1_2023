@@ -7,7 +7,7 @@ namespace Entity
     {
     public:
         Cavalry();
-        Cavalry(Vector2 position, Team team);
+        Cavalry(Vector2 position, Team , Texture2D newTexture);
         Cavalry(float hp, float attack, float range, float speed, Rectangle body, Team team);
         void Attack() override;
         void SetDestination(Vector2 newDestination) override;

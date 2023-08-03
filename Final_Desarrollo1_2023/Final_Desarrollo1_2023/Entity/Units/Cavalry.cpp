@@ -39,9 +39,9 @@ namespace Entity
         }
     }
 
-    Cavalry::Cavalry(Vector2 position, Team team): inAttack(false), destinationAux()
+    Cavalry::Cavalry(Vector2 position, Team team, Texture2D newTexture): inAttack(false), destinationAux()
     {
-        texture = LoadTexture("../res/red-cavalry.png");
+        texture = newTexture;
         hp = 75;
         currentHP = hp;
         attack = 35;
@@ -50,7 +50,7 @@ namespace Entity
         speedAux = speed;
         attackSpeed = 1;
         body = {
-            position.x, position.y, static_cast<float>(texture.width) * 0.1f, static_cast<float>(texture.height) * 0.1f
+            position.x, position.y, static_cast<float>(newTexture.width) * 0.1f, static_cast<float>(newTexture.height) * 0.1f
         };
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;

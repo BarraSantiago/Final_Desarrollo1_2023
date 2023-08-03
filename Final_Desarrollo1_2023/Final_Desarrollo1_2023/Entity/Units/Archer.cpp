@@ -59,9 +59,9 @@ namespace Entity
         }
     }
 
-    Archer::Archer(Vector2 position, Team team)
+    Archer::Archer(Vector2 position, Team team, Texture2D newTexture)
     {
-        texture = LoadTexture("../res/red-archer.png");
+        texture = newTexture;
         hp = 100;
         attack = 20;
         speed = 35;

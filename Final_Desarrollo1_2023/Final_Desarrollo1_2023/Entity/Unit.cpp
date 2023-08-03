@@ -68,26 +68,33 @@ namespace Entity
         const float height = body.height;
         float xPos = body.x + width / 2 - hp / 2;
         float yPos = body.y - height / 2;
-        
+
         const Rectangle totalHP = {xPos, yPos, hp, HPBARHEIGHT};
         Rectangle currentHpRect = {xPos, yPos, currentHP, HPBARHEIGHT};
 
         DrawRectangleRec(totalHP, RAYWHITE);
         DrawRectangleRec(currentHpRect, RED);
     }
+
     Rectangle TextureToSourceRec(Texture2D texture)
     {
         int frameWidth = texture.width;
         int frameHeight = texture.height;
         return {0.0f, 0.0f, static_cast<float>(frameWidth), static_cast<float>(frameHeight)};
     }
+
     void Unit::DrawBody()
     {
+        const float scale = 0.05f;
         const float lineWidth = ((body.width + body.height) / 2) / 15;
+        
+        const Vector2 origin = {static_cast<float>(texture.width) * scale, static_cast<float>(texture.height) * scale};
+        
         const Rectangle sourceRec = TextureToSourceRec(texture);
-        const float scale = .1f;
-        //DrawTextureEx(texture, {body.x, body.y}, 0, scale, color);
-        DrawTexturePro(texture,sourceRec,{body.x+body.width/2, body.y+body.height/2, body.width, body.height}, {(float)texture.width*0.05f, (float)texture.height*0.05f}, 0, color);
+        const Rectangle destRec = {body.x + body.width / 2, body.y + body.height / 2, body.width, body.height};
+        
+        DrawTexturePro(texture, sourceRec, destRec, origin, 0, RAYWHITE);
+
         if (selected)
         {
             DrawRectangleLinesEx(body, lineWidth, YELLOW);

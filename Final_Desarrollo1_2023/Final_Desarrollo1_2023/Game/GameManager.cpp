@@ -15,7 +15,10 @@ std::vector<Unit*> GameManager::enemyUnits;
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerformed(false)
 {
     background = LoadTexture("../res/background.png");
-    playerUnits.push_back(new Cavalry({50, 300}, player));
+    solTexture = LoadTexture("../res/blue-knight.png");
+    arcTexture = LoadTexture("../res/blue-archer.png");
+    cavTexture = LoadTexture("../res/blue-cavalry.png");
+    playerUnits.push_back(new Cavalry({50, 300}, player, cavTexture));
 
     enemyController = new AIManager::EnemyController;
 
@@ -25,15 +28,21 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerfor
 GameManager::~GameManager()
 {
     delete enemyController;
+    
     for (Unit* unit : playerUnits)
     {
         delete unit;
     }
+    
     for (Unit* unit : enemyUnits)
     {
         delete unit;
     }
+    
     UnloadTexture(background);
+    UnloadTexture(solTexture);
+    UnloadTexture(arcTexture);
+    UnloadTexture(cavTexture);
 }
 
 void GameManager::GameLoop()
@@ -52,7 +61,8 @@ void GameManager::Update()
 
     UnitsManager();
     if (!actionPerformed)SpawnManager(GetCharPressed());
-    enemyController->Update();
+    
+    AIManager::EnemyController::Update();
 
     RemoveDeadUnits(playerUnits);
     RemoveDeadUnits(enemyUnits);
@@ -63,11 +73,11 @@ void GameManager::Draw() const
 {
     BeginDrawing();
     ClearBackground(BLACK);
-    
-    DrawTextureEx(background, {0,0}, 0, 1.f, WHITE);
 
-    enemyController->Draw();
-    
+    DrawTextureEx(background, {0, 0}, 0, 1.f, WHITE);
+
+    AIManager::EnemyController::Draw();
+
     for (Unit* unit : playerUnits)
     {
         unit->DrawBody();
@@ -85,19 +95,18 @@ void GameManager::Draw() const
 
 void GameManager::SpawnManager(char input)
 {
-    //TODO REMOVE MAGIC LETTERS
     switch (toupper(input))
     {
     case 'Q':
-        playerUnits.push_back(new Soldier{GetMousePosition(), player});
+        playerUnits.push_back(new Soldier{GetMousePosition(), player, solTexture});
         actionPerformed = true;
         break;
     case 'W':
-        playerUnits.push_back(new Cavalry{GetMousePosition(), player});
+        playerUnits.push_back(new Cavalry{GetMousePosition(), player, cavTexture});
         actionPerformed = true;
         break;
     case 'E':
-        playerUnits.push_back(new Archer{GetMousePosition(), player});
+        playerUnits.push_back(new Archer{GetMousePosition(), player, arcTexture});
         actionPerformed = true;
         break;
     default:
@@ -108,7 +117,7 @@ void GameManager::SpawnManager(char input)
 void GameManager::MouseManager()
 {
     constexpr int mainMouseButton = MOUSE_BUTTON_LEFT;
-    
+
     if (IsMouseButtonPressed(mainMouseButton))
     {
         boxStart = GetMousePosition();
@@ -137,9 +146,9 @@ void GameManager::UnitsManager() const
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
-            if(!unit->IsSelected()) continue;
-            
-            Vector2 mouseTarget = GetMousePosition();
+            if (!unit->IsSelected()) continue;
+
+            const Vector2 mouseTarget = GetMousePosition();
 
             unit->SetDestination(mouseTarget);
 

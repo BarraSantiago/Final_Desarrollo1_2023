@@ -51,15 +51,15 @@ namespace Entity
         }
     }
 
-    Soldier::Soldier(Vector2 position, Team team)
+    Soldier::Soldier(Vector2 position, Team team, Texture2D newTexture)
     {
-        texture = LoadTexture("../res/red-knight.png");
+        texture = newTexture;
         hp = 100;
         attack = 20;
         speed = 50;
         attackSpeed = 1;
         body = {
-            position.x, position.y, static_cast<float>(texture.width) * 0.1f, static_cast<float>(texture.height) * 0.1f
+            position.x, position.y, static_cast<float>(newTexture.width) * 0.1f, static_cast<float>(newTexture.height) * 0.1f
         };
         range = 25 + (body.width + body.height) / 2;
         this->team = team;

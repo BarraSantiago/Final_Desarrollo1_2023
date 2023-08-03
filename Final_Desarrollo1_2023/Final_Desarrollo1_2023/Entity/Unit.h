@@ -3,7 +3,6 @@
 
 namespace Entity
 {
-    
     class Unit : public DefaultEntity
     {
     public:
@@ -24,7 +23,7 @@ namespace Entity
         void DrawBody() override;
         float GetRange() const;
         Vector2 GetDestination() const;
-        
+
     protected:
         float hp;
         float currentHP;
@@ -35,12 +34,13 @@ namespace Entity
         float speed;
 
         const float HPBARHEIGHT = 20;
-        
+
         bool selected;
         bool alive;
 
         Team team;
         Color color{};
+        const Color SELECTIONCOLOR = YELLOW;
 
         Unit* target;
 

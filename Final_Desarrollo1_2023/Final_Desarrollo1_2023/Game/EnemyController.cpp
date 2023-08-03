@@ -14,25 +14,32 @@ namespace AIManager
 {
     bool CheckDistance(Unit* unit, Unit* unit2, float distance)
     {
-        Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
-        Vector2 unit2Pos = {unit2->GetBody().x, unit2->GetBody().y};
+        const Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
+        const Vector2 unit2Pos = {unit2->GetBody().x, unit2->GetBody().y};
         return Vector2Distance(unit1Pos, unit2Pos) < distance;
     }
 
     bool CheckDistance(Unit* unit, Vector2 destination, float distance)
     {
-        Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
+        const Vector2 unit1Pos = {unit->GetBody().x, unit->GetBody().y};
 
         return Vector2Distance(unit1Pos, destination) < distance;
     }
 
     EnemyController::EnemyController()
     {
-        GameManager::enemyUnits.push_back(new Soldier{{500, 500}, enemy});
+        solTexture = LoadTexture("../res/red-knight.png");
+        arcTexture = LoadTexture("../res/red-archer.png");
+        cavTexture = LoadTexture("../res/red-cavalry.png");
+        GameManager::enemyUnits.push_back(new Soldier{{500, 500}, enemy, solTexture});
     }
 
     EnemyController::~EnemyController()
-    = default;
+    {
+        UnloadTexture(solTexture);
+        UnloadTexture(arcTexture);
+        UnloadTexture(cavTexture);
+    }
 
     void EnemyController::Update()
     {
@@ -63,24 +70,24 @@ namespace AIManager
         }
     }
 
-    void EnemyController::SpawnArcher(Vector2 position)
+    void EnemyController::SpawnArcher(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Archer{position, enemy});
+        GameManager::enemyUnits.push_back(new Archer{position, enemy, arcTexture});
     }
 
-    void EnemyController::SpawnCavalry(Vector2 position)
+    void EnemyController::SpawnCavalry(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Cavalry{position, enemy});
+        GameManager::enemyUnits.push_back(new Cavalry{position, enemy, cavTexture});
     }
 
-    void EnemyController::SpawnSoldier(Vector2 position)
+    void EnemyController::SpawnSoldier(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Soldier{position, enemy});
+        GameManager::enemyUnits.push_back(new Soldier{position, enemy, solTexture});
     }
 
     void EnemyController::UnitTargeting(Unit* unit)
     {
-        Vector2 enemyPos = {unit->GetBody().x, unit->GetBody().y};
+        const Vector2 enemyPos = {unit->GetBody().x, unit->GetBody().y};
         Unit* nearestPlayerUnit = nullptr;
         float nearestDistance = std::numeric_limits<float>::max();
 
@@ -88,10 +95,10 @@ namespace AIManager
         {
             if (!playerUnit || !playerUnit->IsAlive()) continue;
 
-            Vector2 targetPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
+            const Vector2 targetPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
 
             // Calculate the distance between the current unit and the playerUnit
-            float distanceToPlayerUnit = Vector2Distance(targetPos, enemyPos);
+            const float distanceToPlayerUnit = Vector2Distance(targetPos, enemyPos);
 
             // Compare the distance with the nearest found so far
             if (distanceToPlayerUnit < nearestDistance)
@@ -110,7 +117,7 @@ namespace AIManager
     }
 
 
-    bool EnemyController::AreAnyUnitsAlive(std::vector<Unit*> units)
+    bool EnemyController::AreAnyUnitsAlive(const std::vector<Unit*>& units)
     {
         for (Unit* unit : units)
         {

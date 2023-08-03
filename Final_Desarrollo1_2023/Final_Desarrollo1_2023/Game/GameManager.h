@@ -19,7 +19,10 @@ public:
     static std::vector<Entity::Unit*> enemyUnits;
 
 private:
-    Texture2D background;
+    Texture2D background{};
+    Texture2D solTexture{};
+    Texture2D arcTexture{};
+    Texture2D cavTexture{};
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
@@ -30,7 +33,7 @@ private:
     void MouseManager();
     void UnitsManager() const;
     void SelectUnit(Entity::Unit* unit) const;
-    void DeselectUnits();
+    static void DeselectUnits();
     static void RemoveDeadUnits(std::vector<Entity::Unit*>& units);
     static void RemoveDeadProjectiles(std::vector<Objects::Projectile*>& projectile);
 };
