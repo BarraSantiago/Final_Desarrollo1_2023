@@ -6,23 +6,24 @@
 namespace Entity
 {
     Unit::~Unit()
-    = default;
+    {
+        UnloadTexture(texture);
+    }
 
     Unit::Unit(): hp(100), currentHP(hp), attack(20), range(5), attackSpeed(1), attackCooldown(1), speed(50),
                   selected(false), alive(true), team(player),
-                  target(nullptr), direction({200, 200})
+                  target(nullptr), direction({200, 200}), texture()
     {
-        body = {200, 200, 100, 100};
         switch (team)
         {
         case player:
-            color = BLUE;
+            color = RAYWHITE;
             break;
         case enemy:
             color = RED;
             break;
         case neutral:
-            color = RAYWHITE;
+            color = GRAY;
             break;
         }
     }
@@ -61,23 +62,32 @@ namespace Entity
         }
     }
 
-    void Unit::DrawHP()
+    void Unit::DrawHP() const
     {
         const float width = body.width;
         const float height = body.height;
-        const Rectangle totalHP = {body.x + width / 2 - hp / 2, body.y - height / 2, hp, (width + height) / 6};
-        Rectangle currentHpRect = {body.x + width / 2 - hp / 2, body.y - height / 2, currentHP, (width + height) / 6};
+        float xPos = body.x + width / 2 - hp / 2;
+        float yPos = body.y - height / 2;
+        
+        const Rectangle totalHP = {xPos, yPos, hp, HPBARHEIGHT};
+        Rectangle currentHpRect = {xPos, yPos, currentHP, HPBARHEIGHT};
 
         DrawRectangleRec(totalHP, RAYWHITE);
         DrawRectangleRec(currentHpRect, RED);
     }
-
+    Rectangle TextureToSourceRec(Texture2D texture)
+    {
+        int frameWidth = texture.width;
+        int frameHeight = texture.height;
+        return {0.0f, 0.0f, static_cast<float>(frameWidth), static_cast<float>(frameHeight)};
+    }
     void Unit::DrawBody()
     {
-        const float lineWidth = ((body.width + body.height) / 2) / 10;
-
-        DrawRectangleRec(body, color);
-
+        const float lineWidth = ((body.width + body.height) / 2) / 15;
+        const Rectangle sourceRec = TextureToSourceRec(texture);
+        const float scale = .1f;
+        //DrawTextureEx(texture, {body.x, body.y}, 0, scale, color);
+        DrawTexturePro(texture,sourceRec,{body.x+body.width/2, body.y+body.height/2, body.width, body.height}, {(float)texture.width*0.05f, (float)texture.height*0.05f}, 0, color);
         if (selected)
         {
             DrawRectangleLinesEx(body, lineWidth, YELLOW);
@@ -94,7 +104,7 @@ namespace Entity
         return direction;
     }
 
-    bool Unit::IsSelected()
+    bool Unit::IsSelected() const
     {
         return selected;
     }
@@ -109,7 +119,7 @@ namespace Entity
         return body;
     }
 
-    Team Unit::GetTeam()
+    Team Unit::GetTeam() const
     {
         return team;
     }

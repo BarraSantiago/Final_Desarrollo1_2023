@@ -14,6 +14,7 @@ std::vector<Unit*> GameManager::enemyUnits;
 
 GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerformed(false)
 {
+    background = LoadTexture("../res/background.png");
     playerUnits.push_back(new Cavalry({50, 300}, player));
 
     enemyController = new AIManager::EnemyController;
@@ -32,9 +33,10 @@ GameManager::~GameManager()
     {
         delete unit;
     }
+    UnloadTexture(background);
 }
 
-void GameManager::GameFlow()
+void GameManager::GameLoop()
 {
     while (!WindowShouldClose())
     {
@@ -57,13 +59,15 @@ void GameManager::Update()
     RemoveDeadProjectiles(Archer::projectiles);
 }
 
-void GameManager::Draw()
+void GameManager::Draw() const
 {
     BeginDrawing();
     ClearBackground(BLACK);
+    
+    DrawTextureEx(background, {0,0}, 0, 1.f, WHITE);
 
     enemyController->Draw();
-
+    
     for (Unit* unit : playerUnits)
     {
         unit->DrawBody();
@@ -82,19 +86,16 @@ void GameManager::Draw()
 void GameManager::SpawnManager(char input)
 {
     //TODO REMOVE MAGIC LETTERS
-    switch (input)
+    switch (toupper(input))
     {
-    case 'q':
     case 'Q':
         playerUnits.push_back(new Soldier{GetMousePosition(), player});
         actionPerformed = true;
         break;
-    case 'w':
     case 'W':
         playerUnits.push_back(new Cavalry{GetMousePosition(), player});
         actionPerformed = true;
         break;
-    case 'e':
     case 'E':
         playerUnits.push_back(new Archer{GetMousePosition(), player});
         actionPerformed = true;
@@ -106,7 +107,8 @@ void GameManager::SpawnManager(char input)
 
 void GameManager::MouseManager()
 {
-    const int mainMouseButton = MOUSE_BUTTON_LEFT;
+    constexpr int mainMouseButton = MOUSE_BUTTON_LEFT;
+    
     if (IsMouseButtonPressed(mainMouseButton))
     {
         boxStart = GetMousePosition();
@@ -127,7 +129,7 @@ void GameManager::MouseManager()
     }
 }
 
-void GameManager::UnitsManager()
+void GameManager::UnitsManager() const
 {
     for (Unit* unit : playerUnits)
     {

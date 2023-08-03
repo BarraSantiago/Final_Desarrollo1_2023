@@ -22,7 +22,7 @@ namespace Entity
         switch (team)
         {
         case player:
-            color = BLUE;
+            color = WHITE;
             break;
         case enemy:
             color = RED;
@@ -48,25 +48,26 @@ namespace Entity
         switch (team)
         {
         case player:
-            color = BLUE;
+            color = WHITE;
             break;
         case enemy:
-            color = RED;
+            color = DARKGRAY;
             break;
         case neutral:
-            color = RAYWHITE;
+            color = GREEN;
             break;
         }
     }
 
     Archer::Archer(Vector2 position, Team team)
     {
+        texture = LoadTexture("../res/red-archer.png");
         hp = 100;
         attack = 20;
         speed = 35;
         attackSpeed = 1;
         proyectileSpeed = speed * 2;
-        body = {position.x, position.y, 40, 80};
+        body = {position.x, position.y, static_cast<float>(texture.width)*0.1f, static_cast<float>(texture.height)*0.1f};
         range = 150 + (body.width + body.height) / 2;
         this->team = team;
 

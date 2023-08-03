@@ -12,11 +12,11 @@ namespace Entity
         void Move();
         virtual void SetDestination(Vector2 newDirection);
         void ModifyHealth(float hpModifier);
-        void DrawHP();
+        void DrawHP() const;
         virtual void Attack() = 0;
-        bool IsSelected();
+        bool IsSelected() const;
         Unit* GetTarget();
-        Team GetTeam();
+        Team GetTeam() const;
         bool IsAlive() override;
         void SetSelected(bool select);
         void SetTarget(Unit* target);
@@ -34,16 +34,18 @@ namespace Entity
         float attackCooldown;
         float speed;
 
+        const float HPBARHEIGHT = 20;
+        
         bool selected;
         bool alive;
 
         Team team;
-        Color color;
+        Color color{};
 
         Unit* target;
 
         Vector2 destination{};
         Vector2 direction{};
-
+        Texture2D texture;
     };
 }

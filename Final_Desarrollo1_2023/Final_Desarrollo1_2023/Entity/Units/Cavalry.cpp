@@ -20,7 +20,7 @@ namespace Entity
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
         attackCooldown = 0;
-        
+
         body = {100, 100, 75, 50};
 
         direction = {0, 0};
@@ -41,6 +41,7 @@ namespace Entity
 
     Cavalry::Cavalry(Vector2 position, Team team): inAttack(false), destinationAux()
     {
+        texture = LoadTexture("../res/red-cavalry.png");
         hp = 75;
         currentHP = hp;
         attack = 35;
@@ -48,21 +49,23 @@ namespace Entity
         specialSpeed = speed * 4;
         speedAux = speed;
         attackSpeed = 1;
-        body = {position.x, position.y, 70, 50};
+        body = {
+            position.x, position.y, static_cast<float>(texture.width) * 0.1f, static_cast<float>(texture.height) * 0.1f
+        };
         range = 25 + (body.width + body.height) / 2;
         attackFrames = attackSpeed / 2;
         direction = {0, 0};
         attackCooldown = 0;
-        
+
         this->team = team;
 
         switch (team)
         {
         case player:
-            color = BLUE;
+            color = WHITE;
             break;
         case enemy:
-            color = RED;
+            color = DARKGRAY;
             break;
         case neutral:
             color = RAYWHITE;

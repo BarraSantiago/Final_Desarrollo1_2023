@@ -11,15 +11,15 @@ class GameManager
 public:
     GameManager();
     ~GameManager();
-    void GameFlow();
+    void GameLoop();
     void Update();
-    void Draw();
+    void Draw() const;
 
     static std::vector<Entity::Unit*> playerUnits;
     static std::vector<Entity::Unit*> enemyUnits;
 
 private:
-    
+    Texture2D background;
     Rectangle mouseSelection;
     Vector2 boxStart;
     Vector2 boxEnd;
@@ -28,7 +28,7 @@ private:
     
     void SpawnManager(char input);
     void MouseManager();
-    void UnitsManager();
+    void UnitsManager() const;
     void SelectUnit(Entity::Unit* unit) const;
     void DeselectUnits();
     static void RemoveDeadUnits(std::vector<Entity::Unit*>& units);
