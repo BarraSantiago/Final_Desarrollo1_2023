@@ -3,8 +3,8 @@
 #include <raymath.h>
 
 #include "../Unit.h"
-#include "../../Game/Collisions.h"
-#include "../../Game/GameManager.h"
+#include "../../Gameplay/Collisions.h"
+#include "../../Gameplay/GameplayManager.h"
 
 Texture2D Objects::Projectile::redTexture;
 Texture2D Objects::Projectile::blueTexture;
@@ -87,10 +87,10 @@ namespace Objects
         switch (team)
         {
         case Entity::player:
-            CheckCollision(GameManager::enemyUnits);
+            CheckCollision(GameplayManager::enemyUnits);
             break;
         case Entity::enemy:
-            CheckCollision(GameManager::playerUnits);
+            CheckCollision(GameplayManager::playerUnits);
 
             break;
         case Entity::neutral:
@@ -119,20 +119,42 @@ namespace Objects
             static_cast<float>(blueTexture.width) * scale, static_cast<float>(blueTexture.height) * scale
         };
 
-        const Rectangle sourceRec = {0, 0, frameWidth, frameHeight};
-        const Rectangle invserseSourceRec = {sourceRec.x, sourceRec.y, -sourceRec.width, sourceRec.height};
         const Rectangle destRec = {body.x + body.width / 2, body.y + body.height / 2, body.width, body.height};
-
-        const bool movingRight = direction.x > 0;
-
+        
+        const Rectangle sourceRec = {0, 0, frameWidth, frameHeight};
         const Texture2D currentTexture = team == Entity::player ? blueTexture : redTexture;
-        DrawTexturePro(currentTexture, movingRight ? sourceRec : invserseSourceRec, destRec, origin, 0, RAYWHITE);
+        const float rotation = atan2f(direction.y, direction.x) * RAD2DEG;
+        DrawTexturePro(currentTexture, sourceRec, destRec, origin, rotation, RAYWHITE);
     }
 
     void Projectile::Collide()
     {
         target->ModifyHealth(-damage);
         alive = false;
+    }
+
+    float clamp(float value, float min, float max)
+    {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
+    }
+
+    float Projectile::AngleBetweenVectors(Vector2 v1, Vector2 v2)
+    {
+        float dotProduct = Vector2DotProduct(v1, v2);
+        float magnitudeV1 = Vector2Length(v1);
+        float magnitudeV2 = Vector2Length(v2);
+
+        float cosineAngle = dotProduct / (magnitudeV1 * magnitudeV2);
+
+        // Taking the arccosine to get the angle in radians
+        float angleInRadians = acosf(clamp(cosineAngle, -1.0f, 1.0f));
+
+        // Optionally, convert to degrees
+        float angleInDegrees = RAD2DEG * angleInRadians;
+
+        return angleInDegrees;
     }
 
     bool Projectile::IsAlive()

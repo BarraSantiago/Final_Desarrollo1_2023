@@ -26,6 +26,8 @@ namespace Objects
     private:
         void CheckCollision(const std::vector<Entity::Unit*>& units);
         void Collide();
+        static float AngleBetweenVectors(Vector2 v1, Vector2 v2);
+        
         const float speed;
         const float damage;
 

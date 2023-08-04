@@ -1,15 +1,11 @@
-﻿#include "raylib.h"
+﻿
 #include "Game/GameManager.h"
 
 int main()
 {
-    InitWindow(1080, 720, "se");
-    
-    GameManager* game_manager = new GameManager;
-    
-    game_manager->GameLoop();
+    GameManager* gameManager = new GameManager;
 
-    delete game_manager;
+    gameManager->GameLoop();
 
-    CloseWindow();
+    delete gameManager;
 }

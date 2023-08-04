@@ -69,8 +69,8 @@ namespace Entity
         float xPos = body.x + width / 2 - hp / 2;
         float yPos = body.y - height / 2;
 
-        const Rectangle totalHP = {xPos, yPos, hp, HPBARHEIGHT};
-        Rectangle currentHpRect = {xPos, yPos, currentHP, HPBARHEIGHT};
+        const Rectangle totalHP = {xPos, yPos, hp, hpBarHeight};
+        Rectangle currentHpRect = {xPos, yPos, currentHP, hpBarHeight};
 
         DrawRectangleRec(totalHP, RAYWHITE);
         DrawRectangleRec(currentHpRect, RED);

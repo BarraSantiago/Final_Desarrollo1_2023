@@ -2,7 +2,7 @@
 
 #include <raymath.h>
 
-#include "GameManager.h"
+#include "GameplayManager.h"
 #include "../Entity/Units/Archer.h"
 #include "../Entity/Units/Cavalry.h"
 #include "../Entity/Units/Soldier.h"
@@ -42,11 +42,11 @@ namespace AIManager
 
     void EnemyController::Update()
     {
-        for (Unit* unit : GameManager::enemyUnits)
+        for (Unit* unit : GameplayManager::enemyUnits)
         {
             if (!unit || !unit->IsAlive()) continue;
 
-            if (AreAnyUnitsAlive(GameManager::playerUnits))
+            if (AreAnyUnitsAlive(GameplayManager::playerUnits))
             {
                 UnitTargeting(unit);
             }
@@ -60,7 +60,7 @@ namespace AIManager
 
     void EnemyController::Draw()
     {
-        for (Unit* unit : GameManager::enemyUnits)
+        for (Unit* unit : GameplayManager::enemyUnits)
         {
             if (!unit->IsAlive()) continue;
 
@@ -71,17 +71,17 @@ namespace AIManager
 
     void EnemyController::SpawnArcher(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Archer{position, enemy, arcTexture});
+        GameplayManager::enemyUnits.push_back(new Archer{position, enemy, arcTexture});
     }
 
     void EnemyController::SpawnCavalry(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Cavalry{position, enemy, cavTexture});
+        GameplayManager::enemyUnits.push_back(new Cavalry{position, enemy, cavTexture});
     }
 
     void EnemyController::SpawnSoldier(Vector2 position) const
     {
-        GameManager::enemyUnits.push_back(new Soldier{position, enemy, solTexture});
+        GameplayManager::enemyUnits.push_back(new Soldier{position, enemy, solTexture});
     }
 
     void EnemyController::UnitTargeting(Unit* unit)
@@ -90,7 +90,7 @@ namespace AIManager
         Unit* nearestPlayerUnit = nullptr;
         float nearestDistance = std::numeric_limits<float>::max();
 
-        for (Unit* playerUnit : GameManager::playerUnits)
+        for (Unit* playerUnit : GameplayManager::playerUnits)
         {
             if (!playerUnit || !playerUnit->IsAlive()) continue;
 

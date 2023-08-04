@@ -63,7 +63,8 @@ namespace Entity
         hp = 100;
         attack = 20;
         speed = 35;
-        attackSpeed = 1.3f;
+        attackSpeed = 1.f;
+        
         body = {position.x, position.y, static_cast<float>(texture.width)*0.1f, static_cast<float>(texture.height)*0.1f};
         range = 150 + (body.width + body.height) / 2;
         this->team = team;

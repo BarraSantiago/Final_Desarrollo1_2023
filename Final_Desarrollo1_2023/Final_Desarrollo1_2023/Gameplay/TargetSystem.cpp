@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <cmath>
 
-#include "GameManager.h"
+#include "GameplayManager.h"
 #include "../Entity/Unit.h"
 using namespace Entity;
 

@@ -33,14 +33,14 @@ namespace Entity
         float attackCooldown;
         float speed;
 
-        const float HPBARHEIGHT = 20;
+        const float hpBarHeight = 20;
 
         bool selected;
         bool alive;
 
         Team team;
         Color color{};
-        const Color SELECTIONCOLOR = YELLOW;
+        const Color selectionColor = YELLOW;
 
         Unit* target;
 

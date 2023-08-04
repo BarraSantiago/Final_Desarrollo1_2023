@@ -25,11 +25,13 @@
     <ClCompile Include="Entity\Units\Archer.cpp" />
     <ClCompile Include="Entity\Units\Cavalry.cpp" />
     <ClCompile Include="Entity\Units\Soldier.cpp" />
-    <ClCompile Include="Game\Collisions.cpp" />
-    <ClCompile Include="Game\EnemyController.cpp" />
+    <ClCompile Include="Gameplay\Collisions.cpp" />
+    <ClCompile Include="Gameplay\EnemyController.cpp" />
+    <ClCompile Include="Gameplay\GameplayManager.cpp" />
+    <ClCompile Include="Gameplay\TargetSystem.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
-    <ClCompile Include="Game\TargetSystem.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu\MenuManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity\Checks.h" />
@@ -39,10 +41,12 @@
     <ClInclude Include="Entity\Units\Archer.h" />
     <ClInclude Include="Entity\Units\Cavalry.h" />
     <ClInclude Include="Entity\Units\Soldier.h" />
-    <ClInclude Include="Game\Collisions.h" />
-    <ClInclude Include="Game\EnemyController.h" />
+    <ClInclude Include="Gameplay\Collisions.h" />
+    <ClInclude Include="Gameplay\EnemyController.h" />
+    <ClInclude Include="Gameplay\GameplayManager.h" />
+    <ClInclude Include="Gameplay\TargetSystem.h" />
     <ClInclude Include="Game\GameManager.h" />
-    <ClInclude Include="Game\TargetSystem.h" />
+    <ClInclude Include="Menu\MenuManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
