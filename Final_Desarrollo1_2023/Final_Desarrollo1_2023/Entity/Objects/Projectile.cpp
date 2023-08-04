@@ -54,7 +54,7 @@ namespace Objects
         this->destination = direction;
         this->direction = Vector2Normalize(Vector2Subtract(direction, origin));
         this->team = team;
-        
+
         body.x = origin.x;
         body.y = origin.y;
         body.width = 50;
@@ -77,23 +77,24 @@ namespace Objects
 
     Projectile::~Projectile()
     = default;
-    
+
     void Projectile::Move()
     {
         body.x += direction.x * speed * GetFrameTime();
         body.y += direction.y * speed * GetFrameTime();
 
-        if (team == Entity::player)
+        switch (team)
         {
-            for (Entity::Unit* unit : GameManager::enemyUnits)
-            {
-                if (Collision::AABBCollision(this, unit))
-                {
-                    SetTarget(unit);
-                    Collide();
-                    break;
-                }
-            }
+        case Entity::player:
+            CheckCollision(GameManager::enemyUnits);
+            break;
+        case Entity::enemy:
+            CheckCollision(GameManager::playerUnits);
+            
+            break;
+        case Entity::neutral:
+        default:
+            break;
         }
     }
 
@@ -121,5 +122,18 @@ namespace Objects
     bool Projectile::IsAlive()
     {
         return alive;
+    }
+
+    void Projectile::CheckCollision(const std::vector<Entity::Unit*>& units)
+    {
+        for (Entity::Unit* unit : units)
+        {
+            if (Collision::AABBCollision(this, unit))
+            {
+                SetTarget(unit);
+                Collide();
+                break;
+            }
+        }
     }
 }

@@ -97,6 +97,15 @@ void GameManager::SpawnManager(char input)
 {
     switch (toupper(input))
     {
+    case '1':
+        enemyController->SpawnSoldier(GetMousePosition());
+        break;
+    case '2':
+        enemyController->SpawnCavalry(GetMousePosition());
+        break;
+    case '3':
+        enemyController->SpawnArcher(GetMousePosition());
+        break;
     case 'Q':
         playerUnits.push_back(new Soldier{GetMousePosition(), player, solTexture});
         actionPerformed = true;

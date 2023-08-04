@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "../Unit.h"
 #include "../DefaultEntity.h"
 
@@ -17,10 +19,11 @@ namespace Objects
         void Move();
         void SetTarget(Entity::Unit* unit);
         void DrawBody() override;
-        void Collide();
         bool IsAlive() override;
 
     private:
+        void CheckCollision(const std::vector<Entity::Unit*>& units);
+        void Collide();
         float speed;
         float damage;
 
