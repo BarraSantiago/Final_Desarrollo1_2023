@@ -1,6 +1,6 @@
 #include "Archer.h"
 
-#include "..\Checks.h"
+#include "../Checks.h"
 #include "../Objects/Projectile.h"
 
 namespace Entity
@@ -15,7 +15,6 @@ namespace Entity
         range = 150 + (body.width + body.height) / 2;
         attackSpeed = 1;
         body = {100, 100, 40, 80};
-        proyectileSpeed = speed * 2;
 
         this->team = team;
 
@@ -34,7 +33,7 @@ namespace Entity
     }
 
     Archer::Archer(float hp, float attack, float range, float attackSpeed, float speed, const Rectangle& body,
-                   Team team, float proyectileSpeed)
+                   Team team)
     {
         this->hp = hp;
         this->attack = attack;
@@ -43,7 +42,6 @@ namespace Entity
         this->attackSpeed = attackSpeed;
         this->body = body;
         this->team = team;
-        this->proyectileSpeed = proyectileSpeed;
 
         switch (team)
         {
@@ -65,8 +63,7 @@ namespace Entity
         hp = 100;
         attack = 20;
         speed = 35;
-        attackSpeed = 1;
-        proyectileSpeed = speed * 2;
+        attackSpeed = 1.3f;
         body = {position.x, position.y, static_cast<float>(texture.width)*0.1f, static_cast<float>(texture.height)*0.1f};
         range = 150 + (body.width + body.height) / 2;
         this->team = team;

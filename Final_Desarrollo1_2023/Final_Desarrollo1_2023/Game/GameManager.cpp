@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "../Entity/Units/Soldier.h"
 #include "TargetSystem.h"
+#include "../Entity/Units/Soldier.h"
 #include "../Entity/Units/Archer.h"
 #include "../Entity/Units/Cavalry.h"
 
@@ -18,31 +18,31 @@ GameManager::GameManager(): mouseSelection(), boxStart(), boxEnd(), actionPerfor
     solTexture = LoadTexture("../res/blue-knight.png");
     arcTexture = LoadTexture("../res/blue-archer.png");
     cavTexture = LoadTexture("../res/blue-cavalry.png");
-    playerUnits.push_back(new Cavalry({50, 300}, player, cavTexture));
-
+    Objects::Projectile::redTexture = LoadTexture("../res/red-arrow.png");
+    Objects::Projectile::blueTexture = LoadTexture("../res/blue-arrow.png");
     enemyController = new AIManager::EnemyController;
-
-    enemyController->SpawnCavalry({111, 111});
 }
 
 GameManager::~GameManager()
 {
     delete enemyController;
-    
+
     for (Unit* unit : playerUnits)
     {
         delete unit;
     }
-    
+
     for (Unit* unit : enemyUnits)
     {
         delete unit;
     }
-    
+
     UnloadTexture(background);
     UnloadTexture(solTexture);
     UnloadTexture(arcTexture);
     UnloadTexture(cavTexture);
+    UnloadTexture(Objects::Projectile::redTexture);
+    UnloadTexture(Objects::Projectile::blueTexture);
 }
 
 void GameManager::GameLoop()
@@ -61,7 +61,7 @@ void GameManager::Update()
 
     UnitsManager();
     if (!actionPerformed)SpawnManager(GetCharPressed());
-    
+
     AIManager::EnemyController::Update();
 
     RemoveDeadUnits(playerUnits);

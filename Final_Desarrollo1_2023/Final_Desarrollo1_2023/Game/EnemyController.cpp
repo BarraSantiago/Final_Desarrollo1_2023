@@ -31,7 +31,6 @@ namespace AIManager
         solTexture = LoadTexture("../res/red-knight.png");
         arcTexture = LoadTexture("../res/red-archer.png");
         cavTexture = LoadTexture("../res/red-cavalry.png");
-        GameManager::enemyUnits.push_back(new Soldier{{500, 500}, enemy, solTexture});
     }
 
     EnemyController::~EnemyController()
@@ -97,10 +96,8 @@ namespace AIManager
 
             const Vector2 targetPos = {playerUnit->GetBody().x, playerUnit->GetBody().y};
 
-            // Calculate the distance between the current unit and the playerUnit
             const float distanceToPlayerUnit = Vector2Distance(targetPos, enemyPos);
 
-            // Compare the distance with the nearest found so far
             if (distanceToPlayerUnit < nearestDistance)
             {
                 nearestDistance = distanceToPlayerUnit;
@@ -108,7 +105,6 @@ namespace AIManager
             }
         }
 
-        // Set the nearest playerUnit as the target and destination for the unit
         if (nearestPlayerUnit)
         {
             unit->SetTarget(nearestPlayerUnit);

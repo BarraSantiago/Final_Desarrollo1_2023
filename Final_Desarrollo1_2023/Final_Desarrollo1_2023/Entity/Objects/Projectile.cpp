@@ -2,16 +2,17 @@
 
 #include <raymath.h>
 
-#include "cmath"
 #include "../Unit.h"
 #include "../../Game/Collisions.h"
 #include "../../Game/GameManager.h"
 
+Texture2D Objects::Projectile::redTexture;
+Texture2D Objects::Projectile::blueTexture;
+
 namespace Objects
 {
     Projectile::Projectile(): speed(130), damage(50), alive(true), direction({0, 0}),
-                              team(Entity::neutral),
-                              target(nullptr)
+                              team(Entity::neutral), target(nullptr)
     {
         color = GRAY;
         switch (team)
@@ -48,7 +49,7 @@ namespace Objects
         }
     }
 
-    Projectile::Projectile(Vector2 direction, Vector2 origin, Entity::Team team): speed(35), damage(30), alive(true),
+    Projectile::Projectile(Vector2 direction, Vector2 origin, Entity::Team team): speed(70), damage(30), alive(true),
         target(nullptr)
     {
         this->destination = direction;
@@ -90,7 +91,7 @@ namespace Objects
             break;
         case Entity::enemy:
             CheckCollision(GameManager::playerUnits);
-            
+
             break;
         case Entity::neutral:
         default:
@@ -110,7 +111,22 @@ namespace Objects
 
     void Projectile::DrawBody()
     {
-        DrawRectangleRec(body, color);
+        const float scale = 0.05f;
+        const float frameWidth = static_cast<float>(blueTexture.width);
+        const float frameHeight = static_cast<float>(blueTexture.height);
+
+        const Vector2 origin = {
+            static_cast<float>(blueTexture.width) * scale, static_cast<float>(blueTexture.height) * scale
+        };
+
+        const Rectangle sourceRec = {0, 0, frameWidth, frameHeight};
+        const Rectangle invserseSourceRec = {sourceRec.x, sourceRec.y, -sourceRec.width, sourceRec.height};
+        const Rectangle destRec = {body.x + body.width / 2, body.y + body.height / 2, body.width, body.height};
+
+        const bool movingRight = direction.x > 0;
+
+        const Texture2D currentTexture = team == Entity::player ? blueTexture : redTexture;
+        DrawTexturePro(currentTexture, movingRight ? sourceRec : invserseSourceRec, destRec, origin, 0, RAYWHITE);
     }
 
     void Projectile::Collide()

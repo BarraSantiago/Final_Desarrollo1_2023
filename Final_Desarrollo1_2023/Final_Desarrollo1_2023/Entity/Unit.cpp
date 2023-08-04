@@ -76,24 +76,22 @@ namespace Entity
         DrawRectangleRec(currentHpRect, RED);
     }
 
-    Rectangle TextureToSourceRec(Texture2D texture)
-    {
-        const float frameWidth = static_cast<float>(texture.width);
-        const float frameHeight = static_cast<float>(texture.height);
-        return {0.0f, 0.0f, frameWidth, frameHeight};
-    }
-
     void Unit::DrawBody()
     {
         const float scale = 0.05f;
         const float lineWidth = ((body.width + body.height) / 2) / 15;
+        
+        const float frameWidth = static_cast<float>(texture.width);
+        const float frameHeight = static_cast<float>(texture.height);
 
         const Vector2 origin = {static_cast<float>(texture.width) * scale, static_cast<float>(texture.height) * scale};
 
-        const Rectangle sourceRec = TextureToSourceRec(texture);
+        const Rectangle sourceRec = {0, 0, frameWidth, frameHeight};
         const Rectangle invserseSourceRec = {sourceRec.x, sourceRec.y, -sourceRec.width, sourceRec.height};
         const Rectangle destRec = {body.x + body.width / 2, body.y + body.height / 2, body.width, body.height};
+        
         bool movingRight = direction.x < 0;
+
         DrawTexturePro(texture, movingRight ? sourceRec : invserseSourceRec, destRec, origin, 0, RAYWHITE);
 
         if (selected)
