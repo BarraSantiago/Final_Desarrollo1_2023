@@ -7,7 +7,7 @@ class GameManager
 public:
     GameManager();
     ~GameManager();
-    void GameLoop();
+    void GameLoop() const;
 
     bool InGame() const;
 private:

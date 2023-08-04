@@ -20,7 +20,7 @@ bool GameManager::InGame() const
     return inGame;
 }
 
-void GameManager::GameLoop()
+void GameManager::GameLoop() const
 {
     while (!WindowShouldClose() && !menuManager->ExitGame())
     {
